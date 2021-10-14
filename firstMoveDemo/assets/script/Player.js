@@ -13,26 +13,10 @@ cc.Class({
         toward: {
             default: {},
         },
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
     },
 
     onKeyDownHandler(e) {
         const currentKey = e.keyCode
-        console.log(currentKey)
         switch (currentKey) {
             case cc.macro.KEY.a:
                 if (!this.toward.a) {
@@ -42,7 +26,6 @@ cc.Class({
                 break;
             case cc.macro.KEY.d:
                 if (!this.toward.d) {
-                    debugger
                     this.towardX = 1
                 }
                 this.toward.d = true
@@ -135,7 +118,7 @@ cc.Class({
         let realDt = dt
         // console.log(this.toward)
         if (this.towardX && this.towardY) {
-            // console.log('shuang!!!!')
+            // 走对角线要根号 2
             realDt = realDt / 1.414
         }
         if (this.towardX) {
