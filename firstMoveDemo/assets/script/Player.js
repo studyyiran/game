@@ -7,7 +7,6 @@
 
 cc.Class({
     extends: cc.Component,
-
     properties: {
         speed: 10,
         toward: {
@@ -18,6 +17,37 @@ cc.Class({
     onKeyDownHandler(e) {
         const currentKey = e.keyCode
         switch (currentKey) {
+            case cc.macro.KEY.m:
+                if (!this.aiSpeedDebuff) {
+                    // 效果：每隔 200 毫秒，判定一下运动状态
+                    this.aiSpeedDebuff = setInterval(() => {
+                        if (Math.random() > 0.5) {
+                            this.scriptAi.speed = 400
+                        } else {
+                            this.scriptAi.speed = 0
+                        }
+                    }, 200)
+                    // 结束：若干秒后结束效果
+                    setTimeout(() => {
+                        clearInterval(this.aiSpeedDebuff)
+                        this.scriptAi.speed = 400
+                        this.aiSpeedDebuff = null
+                    }, 2000)
+                }
+                break;
+            case cc.macro.KEY.space:
+                if (!this.speedBuff) {
+                    // 效果：速度 * 3
+                    this.speed = this.speed * 3
+                    this.speedBuff = true
+                    // 结束：若干秒后结束效果
+                    setTimeout(() => {
+                        this.speedBuff = false
+                        this.speed = this.speed / 3
+                    }, 3000)
+                    // 冷却：
+                }
+                break;
             case cc.macro.KEY.a:
                 if (!this.toward.a) {
                     this.towardX = -1
@@ -98,18 +128,6 @@ cc.Class({
         }
     },
 
-    // LIFE-CYCLE CALLBACKS:
-
-    onLoad() {
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDownHandler, this);
-        // cc.systemEvent.on(cc.SystemEvent.EventType.KEY_PRESS, this.onKeyDownHandler, this);
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUpHandler, this);
-    },
-
-    start() {
-
-    },
-
     onDestroy() {
         console.log('onDestroy')
     },
@@ -141,7 +159,37 @@ cc.Class({
 
     },
 
+    init() {
+        this.enabled = true
+        this.node.setPosition(cc.v2(100, 0))
+    },
+
+    dead() {
+        this.enabled = false
+    },
+
+    onLoad() {
+        console.log(2)
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDownHandler, this);
+        // cc.systemEvent.on(cc.SystemEvent.EventType.KEY_PRESS, this.onKeyDownHandler, this);
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUpHandler, this);
+    },
+
+    onEnable() {
+        console.log(5)
+        // 每次重启游戏，出生
+        this.node.setPosition(cc.v2(100, 0))
+    },
+
+
+    start() {
+        console.log(8)
+        // 为了给敌人施加 debuff 所以需要获取敌人的引用
+        this.scriptAi = this.node.parent.getComponent('Game').Ai.getComponent('Ai')
+    },
+
     update(dt) {
+        console.log('u2')
         this.moveByToward(dt)
     },
 });
