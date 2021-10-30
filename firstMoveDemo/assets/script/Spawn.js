@@ -13,13 +13,9 @@ cc.Class({
       default: null,
       type: cc.Prefab
     },
-    interval: 5000
-
+    interval: 300,
+    timerBombMax: 2
   },
-
-  // LIFE-CYCLE CALLBACKS:
-
-  // onLoad () {},
 
   makeNewThing () {
     const timerBomb = cc.instantiate(this.TimerBomb)
@@ -30,31 +26,53 @@ cc.Class({
     const y = (Math.random() - 0.5) * game.height
     // 设置位置
     timerBomb.setPosition(cc.v2(x, y))
+    // 保存在队列中
+    this.timerBomList.push(timerBomb)
     // 设置销毁回调 spawn
     timerBomb.getComponent('TimerBomb').onDestoryCallSpawn = () => {
       this.timerBombCount = this.timerBombCount - 1
+      // 从队列里面删除
+      this.timerBomList = this.timerBomList.filter((instance) => {
+        return instance !== timerBomb
+      })
     }
+    console.log(this.timerBomList)
+
     // 添加上去
     game.addChild(timerBomb)
   },
 
-  start () {
+  init() {
     // 初始化
     this.timerCount = 0
     this.timerBombCount = 0
-    this.timerBombMax = 1
+
+    this.timerBomList = []
+    this.enabled = true
+  },
+
+  start () {
+    this.init()
+  },
+
+  dead() {
+    this.enabled = false
+    this.timerBomList.forEach((node) => node?.destroy())
   },
 
   update (dt) {
-    this.timerCount += this.timerCount + 1
+    this.timerCount += 1
+  // console.log(this.timerCount)
     if (
       this.timerCount > this.interval &&
       this.timerBombCount < this.timerBombMax
     ) {
+
       // 重置计时器
       this.timerCount = 0
       // 技数++
       this.timerBombCount++
+      // console.log('get it' + this.timerBombCount)
       this.makeNewThing()
     }
   }

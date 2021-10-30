@@ -5,41 +5,77 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import {realDistanceDiffMin} from './util'
+
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        bombTime: 1000,
+        bombMaxTime: 1000,
+        maxSize: 100,
     },
-
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {},
 
     getDistance () {
         // 获取 player
-        const player = this.node.parent.getComponent('Game').Player
-        // 计算距离
-        const distance = this.node.position.sub(player.getPosition()).mag();
-        const minDis = (player.width + this.node.width) / 2
-        if (distance < minDis) {
-            this.whenDestory()
-        }
+        const ccNodePlayer = this.gameScript.Player
+        const ccNodeAi = this.gameScript.Ai
 
+        // 计算距离
+        if (realDistanceDiffMin.call(this, ccNodePlayer) < 0) {
+            this.gameScript.gainScore(ccNodePlayer)
+            this.whenPickUp()
+        }
+        if (realDistanceDiffMin.call(this, ccNodeAi) < 0) {
+            this.gameScript.gainScore(ccNodeAi)
+            this.whenPickUp()
+        }
     },
 
-    whenDestory() {
-      this.node.destroy();
-      this.onDestoryCallSpawn()
+    whenPickUp() {
+        this.dead()
+    },
+
+    checkHaveBomb() {
+        if (this.bombTime >= this.bombMaxTime) {
+            this.dead()
+        }
+
+        this.bombTime++
+        this.setSizeByPercent()
+    },
+
+    setSizeByPercent() {
+        const percent = this.bombTime / this.bombMaxTime
+        const size = 50 + this.maxSize * percent
+        // console.log(this.bombTime)
+        this.node.width = size
+        this.node.height = size
+    },
+
+    dead() {
+        this.onDestoryCallSpawn()
+        this.alive = false
+        this.node.destroy()
+    },
+
+    onLoad() {
+        this.gameScript =this.node.parent.getComponent('Game')
     },
 
     start () {
 
+        this.bombTime = 0
+        this.alive = true
+        this.setSizeByPercent()
     },
 
     update (dt) {
         // 计算距离
         this.getDistance()
+        if (this.isTarget) {
+            return
+        }
         // 计算爆炸倒计时
+        this.checkHaveBomb()
     },
 });
