@@ -45,7 +45,8 @@ cc.Class({
       default: null,
       type: cc.AudioClip
     },
-    needScore: 100
+    needScore: 100,
+    debugger: false
   },
 
   // newTimerBomb () {
@@ -68,15 +69,27 @@ cc.Class({
   },
 
   onLoad() {
-    console.log(1)
+    cc.director.getPhysicsManager().enabled = true;
+    if (this.debugger) {
+      cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+          cc.PhysicsManager.DrawBits.e_pairBit |
+          cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+          cc.PhysicsManager.DrawBits.e_jointBit |
+          cc.PhysicsManager.DrawBits.e_shapeBit
+      ;
+    }
+    cc.director.getPhysicsManager().gravity = cc.v2();
+    window.global = {
+      player: this.Player
+    }
   },
 
   onEnable() {
-    console.log(4)
+    // console.log(4)
   },
 
   start () {
-    console.log(7)
+    // console.log(7)
     // 初始化分数
     this.score = {player: 0,ai:0}
     this.stopGame()
@@ -88,7 +101,6 @@ cc.Class({
   },
 
   checkGameOver() {
-    debugger
     if (this.score.player > this.needScore) {
       this.gameOverLabel.string = 'You Win'
       cc.audioEngine.playEffect(this.scoreAudioPlayer, true);
@@ -120,12 +132,12 @@ cc.Class({
     // 启动
     this.Spawn.getComponent('Spawn').init()
     this.Player.getComponent('Player').init()
-    this.Ai.getComponent('Ai').init()
+    // this.Ai.getComponent('Ai').init()
     this.enabled = true
   },
 
   update () {
-    console.log('u1')
+    // console.log('u1')
     this.renderScore()
     this.checkGameOver()
   }

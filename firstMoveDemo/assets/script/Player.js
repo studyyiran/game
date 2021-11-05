@@ -12,6 +12,7 @@ cc.Class({
         toward: {
             default: {},
         },
+        maxHp: 100,
     },
 
     onKeyDownHandler(e) {
@@ -129,7 +130,7 @@ cc.Class({
     },
 
     onDestroy() {
-        console.log('onDestroy')
+        // console.log('onDestroy')
     },
 
     moveByToward(dt) {
@@ -140,11 +141,35 @@ cc.Class({
             realDt = realDt / 1.414
         }
         if (this.towardX) {
-            this.node.x += this.towardX * this.speed * realDt
+            // this.node.x += this.towardX * this.speed * realDt
         }
         if (this.towardY) {
-            this.node.y += this.towardY * this.speed * realDt
+            // this.node.y += this.towardY * this.speed * realDt
         }
+
+        let speed = this.speed
+        if (this.towardX && this.towardY) {
+            // 走对角线要根号 2
+            speed = speed / 1.414
+        }
+        let lv = this.node.getComponent(cc.RigidBody).linearVelocity
+        debugger
+        if (this.towardX) {
+            lv.x = this.towardX * speed
+            // this.node.x += this.towardX * this.speed * realDt
+        } else {
+            lv.x = 0
+        }
+        if (this.towardY) {
+            lv.y = this.towardY * speed
+            // this.node.y += this.towardY * this.speed * realDt
+        } else {
+            lv.y = 0
+        }
+        this.node.getComponent(cc.RigidBody).linearVelocity = lv
+
+
+
         // if (this.towardXLast === 'a') {
         //     this.node.x -= this.speed * realDt
         // } else if (this.towardXLast === 'd') {
@@ -162,6 +187,7 @@ cc.Class({
     init() {
         this.enabled = true
         this.node.setPosition(cc.v2(100, 0))
+        this.hp = this.maxHp
     },
 
     dead() {
@@ -169,27 +195,27 @@ cc.Class({
     },
 
     onLoad() {
-        console.log(2)
+        // console.log(2)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDownHandler, this);
         // cc.systemEvent.on(cc.SystemEvent.EventType.KEY_PRESS, this.onKeyDownHandler, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUpHandler, this);
     },
 
     onEnable() {
-        console.log(5)
+        // console.log(5)
         // 每次重启游戏，出生
         this.node.setPosition(cc.v2(100, 0))
     },
 
 
     start() {
-        console.log(8)
+        // console.log(8)
         // 为了给敌人施加 debuff 所以需要获取敌人的引用
         this.scriptAi = this.node.parent.getComponent('Game').Ai.getComponent('Ai')
     },
 
     update(dt) {
-        console.log('u2')
+        // console.log('u2')
         this.moveByToward(dt)
     },
 });

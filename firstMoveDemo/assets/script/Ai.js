@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 
-import {realDistanceDiffMin} from "./util";
+import {realDistanceDiffMin, moveTowardTarget} from "./util";
 
 cc.Class({
     extends: cc.Component,
@@ -50,22 +50,30 @@ cc.Class({
     moveToClosest(dt) {
         // TODO 需要保存在类上，不太适应，更喜欢函数式
         const {currentClosest} = this
+
         if (!currentClosest) {
             return
         }
-        const stepDistance = dt * this.speed
-        const diffX = this.node.x - currentClosest.x
-        const diffY = this.node.y - currentClosest.y
-        // 防止摇摆 设置一个最小寻址欲求
-        if (Math.abs(diffX) > stepDistance) {
-            // 我在右侧 我的 x 正数 我往左移 我要减负
-            this.node.x = this.node.x + stepDistance * (diffX > 0 ? -1 : 1)
-        } else if (Math.abs(diffY) > stepDistance) {
-            // 我在上面 我的 y 正数 我往下移 我要减负
-            this.node.y = this.node.y + stepDistance * (diffY > 0 ? -1 : 1)
-        } else {
-            console.log('not move')
-        }
+        moveTowardTarget.call(this, currentClosest, dt * this.speed)
+
+        // (() => {
+            // let angle = this.node.rotation * 2/360 * Math.PI;
+            // let dir = cc.v2(Math.sin(angle), Math.cos(angle));
+            // dir.normalizeSelf();
+            // this.node.x -= dt * dir.x * stepDistance
+            // this.node.y -= dt * dir.y * stepDistance
+        // })();
+
+        // // 防止摇摆 设置一个最小寻址欲求
+        // if (Math.abs(diffX) > stepDistance) {
+        //     // 我在右侧 我的 x 正数 我往左移 我要减负
+        //     this.node.x = this.node.x + stepDistance * (diffX > 0 ? -1 : 1)
+        // } else if (Math.abs(diffY) > stepDistance) {
+        //     // 我在上面 我的 y 正数 我往下移 我要减负
+        //     this.node.y = this.node.y + stepDistance * (diffY > 0 ? -1 : 1)
+        // } else {
+        //     console.log('not move')
+        // }
     },
 
     init() {
@@ -78,24 +86,23 @@ cc.Class({
     },
 
     onLoad () {
-        console.log(3)
+        // console.log(3)
         // 获取全局 spawn 的引用
         this.spawnRef = this.node.parent.getComponent('Game').Spawn.getComponent('Spawn')
     },
 
     onEnable() {
-        console.log(6)
+        // console.log(6)
         // 每次重启游戏，出生
         this.node.setPosition(cc.v2(-100, 0))
     },
 
     start () {
-        console.log(9)
+        // console.log(9)
     },
 
     update (dt) {
-        debugger
-        console.log('u3')
+        // console.log('u3')
         this.findClosest()
         this.moveToClosest(dt)
     },

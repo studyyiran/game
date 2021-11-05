@@ -36,7 +36,7 @@ cc.Class({
         return instance !== timerBomb
       })
     }
-    console.log(this.timerBomList)
+    // console.log(this.timerBomList)
 
     // 添加上去
     game.addChild(timerBomb)
