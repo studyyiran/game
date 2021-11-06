@@ -22,7 +22,7 @@ export function moveTowardTarget (target, stepDistance) {
     this.node.y -= Math.cos(angle2) * stepDistance;
 }
 
-export function makeAttack (a, b) {
+export function nodeAttackScript (a, b) {
     b.hp = b.hp - a.damage
-    console.log(b.hp)
+    console.log('剩余 hp' + b.hp)
 }
