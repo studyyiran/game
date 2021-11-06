@@ -464,6 +464,7 @@
     "_enabled": true,
     "speed": 450,
     "toward": {},
+    "maxHp": 100,
     "_id": "e15HeALSVNd454mPrVbnrC"
   },
   {
@@ -1526,8 +1527,8 @@
     "attack": 1,
     "attackInterval": 1,
     "speed": 100,
-    "viewRange": 200,
-    "attackRange": 100,
+    "viewRange": 2000,
+    "attackRange": 10,
     "_id": "3duRY1aXBBf6VNG3FcTpUO"
   },
   {
@@ -1661,6 +1662,7 @@
       "__uuid__": "a1745f5f-b2f9-4800-80ef-50b907da657d"
     },
     "needScore": 100,
+    "debugger": false,
     "_id": "61mh+rdUFOqbJx+UzVB+Bi"
   }
 ]

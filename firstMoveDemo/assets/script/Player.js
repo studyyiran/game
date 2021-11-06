@@ -153,7 +153,6 @@ cc.Class({
             speed = speed / 1.414
         }
         let lv = this.node.getComponent(cc.RigidBody).linearVelocity
-        debugger
         if (this.towardX) {
             lv.x = this.towardX * speed
             // this.node.x += this.towardX * this.speed * realDt
@@ -186,8 +185,6 @@ cc.Class({
 
     init() {
         this.enabled = true
-        this.node.setPosition(cc.v2(100, 0))
-        this.hp = this.maxHp
     },
 
     dead() {
@@ -195,6 +192,8 @@ cc.Class({
     },
 
     onLoad() {
+        // 这个需要初始化
+        this.hp = this.maxHp
         // console.log(2)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDownHandler, this);
         // cc.systemEvent.on(cc.SystemEvent.EventType.KEY_PRESS, this.onKeyDownHandler, this);

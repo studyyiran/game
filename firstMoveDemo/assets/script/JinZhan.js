@@ -11,11 +11,11 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        attack: 1, // 攻击力
+        damage: 1, // 攻击力
         attackInterval: 1, // 攻击间隔
         speed: 100, // 移动速度
         viewRange: 100, // 视野范围
-        attackRange: 100,
+        attackRange: 10,
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -36,8 +36,9 @@ cc.Class({
 
     isInViewRange(target) {
       const distance = realDistanceDiffMin.call(this, target)
-      const bool = distance < this.viewRange
-      return bool
+        let canSee = distance < this.viewRange
+        let canNotAttack = distance > this.attackRange
+      return canSee && canNotAttack
     },
 
     isInAttackRange(target) {
@@ -50,78 +51,112 @@ cc.Class({
         this.status = status
         switch (status) {
             case 'attackInterval':
+                // 重置
+
                 // 可以移动
                 // 无法再次攻击
-                this.schedule(() => {
-                    this.changeStatus('attack')
-                }, this.attackInterval)
+
                 break
         }
     },
 
+    attack() {
+        this.scheduleOnce(() => {
+            // 重新寻找下一个目标
+            // this.attackTarget = null
+            this.canNotAttach = false
+            // this.changeStatus('idea')
+        }, this.attackInterval)
+
+    },
+
     checkRange() {
         // console.log('checkRange')
-
         // 如果目标消失了 就取消
-        if (this.moveTarget) {
-            console.log(realDistanceDiffMin.call(this, this.moveTarget))
-            if (!cc.isValid(this.moveTarget)) {
-                this.moveTarget = null;
-                this.changeStatus('')
-            } else if (!this.isInViewRange(this.moveTarget)) {
-                this.moveTarget = null;
-                this.changeStatus('')
-            } else if (realDistanceDiffMin.call(this, this.moveTarget) < 0) {
-                // 已经贴边了。
-                this.moveTarget = null;
-                this.changeStatus('')
+        if (this.moveTargetNode) {
+            // console.log(realDistanceDiffMin.call(this, this.moveTargetNode))
+            if (!cc.isValid(this.moveTargetNode)) {
+                this.moveTargetNode = null;
+                this.changeStatus('idea')
+            } else if (!this.isInViewRange(this.moveTargetNode)) {
+                this.moveTargetNode = null;
+                console.log('cancel')
+                this.changeStatus('idea')
             }
-        }
-
-        if (!this.moveTarget) {
-            // 玩家是否在范围内
-            if (this.isInViewRange(this.global.player) && realDistanceDiffMin.call(this, this.global.player) > 0) {
+        } else {
+            // 玩家是否在范围内，重新找到最近的
+            if (this.isInViewRange(this.global.player)) {
+                console.log('moTOTarget again')
                 this.changeStatus('moveToTarget')
-                this.moveTarget = this.global.player
+                this.moveTargetNode = this.global.player
             }
         }
-        // 排序
-        // const arr = this.spawnRef.timerBomList.sort((a, b) => {
-        //     // 越小的 越靠前
-        //     const dis1 = realDistanceDiffMin.call(this, a)
-        //     const dis2 = realDistanceDiffMin.call(this, b)
-        //     return dis1 - dis2
-        // })
-        // // 如果找到最近的敌人
-        // if (arr?.length) {
-        //     this.currentTarget = arr?.[0]
-        //     // TODO 这种侵入，也让人觉得不舒服
-        //     this.currentTarget.getComponent('TimerBomb').isTarget = true
-        //     this.cdFindClosest = this.findClosestMinInterval
-        // }
     },
 
     checkAttack() {
-        if (this.moveTarget) {
-            if (this.isInAttackRange()) {
-                this.changeStatus('')
+        if (this.attackTarget) {
+            if (!cc.isValid(this.attackTarget.node)) {
+                this.attackTarget = null;
+                this.changeStatus('idea')
+            } else if (!this.isInAttackRange(this.attackTarget.node)) {
+                this.attackTarget = null;
+                this.changeStatus('idea')
+            }
+        } else {
+            // 玩家是否在范围内，重新找到最近的
+            if (this.isInAttackRange(this.global.player)) {
+                this.changeStatus('attack')
+                this.attackTarget = this.global.player.getComponent('Player')
             }
         }
     },
 
     status2Action(dt) {
+        let checkBreakFunc
       switch (this.status) {
-          case 'moveToTarget':
-              // 朝方向移动
-              moveTowardTarget.call(this, this.moveTarget, dt * this.speed)
+          case "idea":
+
+              // 搜索敌人来移动
+              this.checkRange()
+              if (this.status !== 'idea') {
+                  break;
+              }
+              // 搜索敌人来进攻
+              this.checkAttack()
               break;
-          case 'attackInterval':
+          // case 'attackInterval':
+          //     // 可以移动，但是无法再次攻击
+          //     this.checkRange()
+          //     break
+          case 'moveToTarget':
+              // 确认目标
+              this.checkRange()
+              if (this.status !== 'moveToTarget') {
+                  break;
+              }
+              // 朝方向移动
+              moveTowardTarget.call(this, this.moveTargetNode, dt * this.speed)
+              // this.changeStatus('idea')
+              // this.moveTargetNode = null
               break;
           case 'attack':
+              console.log('attack')
+              // 再次确认敌人
+              this.checkAttack()
+              if (this.status !== 'attack') {
+                  break;
+              }
               // 播放攻击动画。
               // 对敌人造成损伤
-              makeAttack(this, this.currentTarget)
-              this.changeStatus('attackInterval')
+              if (!this.canNotAttach) {
+                  makeAttack(this, this.attackTarget)
+                  // 攻击冷却
+                  this.attack()
+              }
+
+              this.changeStatus('idea')
+              // this.attackTarget = null
+              // this.canNotAttach = true
               break;
       }
 
@@ -132,9 +167,9 @@ cc.Class({
     onLoad () {
         // 获得玩家。
         this.global = window.global
-        this.moveTarget = null // 移动的追踪目标
-        this.currentTarget = null
-        this.status = ''
+        this.moveTargetNode = null // 移动的追踪目标
+        this.attackTarget = null
+        this.status = 'idea'
     },
 
     start () {
@@ -146,8 +181,7 @@ cc.Class({
         // 1 靠近
         // 2 攻击
         // 3 也可以被玩家选中为攻击目标 并且被攻击
-        this.checkRange()
-        this.checkAttack()
+        // console.log(this.status)
         this.status2Action(dt)
     },
 });

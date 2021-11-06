@@ -96,7 +96,7 @@ cc.Class({
   },
 
   renderScore() {
-    this.playerScoreLabel.string = this.score.player
+    this.playerScoreLabel.string = this.node.getChildByName('JinZhan').getComponent('JinZhan').status
     this.aiScoreLabel.string = this.score.ai
   },
 

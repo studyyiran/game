@@ -9,17 +9,20 @@ export function realDistanceDiffMin (ccNode) {
 
 
 export function moveTowardTarget (target, stepDistance) {
+    if (!target) {
+        return null
+    }
     const diffX = this.node.x - target.x
     const diffY = this.node.y - target.y
     let dir = cc.v2(diffX, diffY)
     let angle2 = dir.signAngle(cc.v2(0,1))
     let olj = angle2 * 180 / Math.PI ;
-    this.node.rotation = olj;
+    // this.node.rotation = olj;
     this.node.x -= Math.sin(angle2) * stepDistance;
     this.node.y -= Math.cos(angle2) * stepDistance;
 }
 
-export function makeAttach (a, b) {
-    b.hp = b.hp - a.attack
+export function makeAttack (a, b) {
+    b.hp = b.hp - a.damage
     console.log(b.hp)
 }
