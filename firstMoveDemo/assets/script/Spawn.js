@@ -13,6 +13,10 @@ cc.Class({
       default: null,
       type: cc.Prefab
     },
+    JinZhan: {
+      default: null,
+      type: cc.Prefab
+    },
     interval: 300,
     timerBombMax: 2
   },
@@ -37,9 +41,23 @@ cc.Class({
       })
     }
     // console.log(this.timerBomList)
+    return timerBomb
+  },
+
+  makeNewThing2 () {
+    const timerBomb = cc.instantiate(this.JinZhan)
+    const game = this.node.parent
+    // 获取一个随机 x
+    const x = (Math.random() - 0.5) * game.width
+    // 获取一个随机 y
+    const y = (Math.random() - 0.5) * game.height
+    // 设置位置
+    timerBomb.setPosition(cc.v2(x, y))
+    // 保存在队列中
+    this.timerBomList.push(timerBomb)
 
     // 添加上去
-    game.addChild(timerBomb)
+    return timerBomb
   },
 
   init() {
@@ -49,6 +67,18 @@ cc.Class({
 
     this.timerBomList = []
     this.enabled = true
+  },
+
+  onLoad() {
+    if (!this.hehe) {
+      const {enemyRoot} = window.global
+      const {children} = enemyRoot
+      this.hehe = this.schedule(() => {
+        if (children.length < 5) {
+          enemyRoot.addChild(this.makeNewThing2())
+        }
+      }, 1)
+    }
   },
 
   start () {
@@ -73,7 +103,7 @@ cc.Class({
       // 技数++
       this.timerBombCount++
       // console.log('get it' + this.timerBombCount)
-      this.makeNewThing()
+      this.node.parent.addChild(this.makeNewThing())
     }
   }
 })

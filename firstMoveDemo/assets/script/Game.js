@@ -81,7 +81,7 @@ cc.Class({
     cc.director.getPhysicsManager().gravity = cc.v2();
     window.global = {
       player: this.Player,
-      enemyRootChildrens: this.node.getChildByName('enemyRoot').children
+      enemyRoot: this.node.getChildByName('enemyRoot')
     }
   },
 
