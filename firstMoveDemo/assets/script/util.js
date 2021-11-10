@@ -18,8 +18,14 @@ export function moveTowardTarget (target, stepDistance) {
     let angle2 = dir.signAngle(cc.v2(0,1))
     let olj = angle2 * 180 / Math.PI ;
     // this.node.rotation = olj;
-    this.node.x -= Math.sin(angle2) * stepDistance;
-    this.node.y -= Math.cos(angle2) * stepDistance;
+    // 替换为物理运算，我们只输入速度，而不用管时间。
+    let lv = this.node.getComponent(cc.RigidBody).linearVelocity
+    lv.x = -Math.sin(angle2) * stepDistance;
+    lv.y = -Math.cos(angle2) * stepDistance;
+    this.node.getComponent(cc.RigidBody).linearVelocity = lv
+
+    // this.node.x -= Math.sin(angle2) * stepDistance;
+    // this.node.y -= Math.cos(angle2) * stepDistance;
 }
 
 export function nodeAttackScript (a, b) {

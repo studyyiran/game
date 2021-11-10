@@ -27,8 +27,6 @@ class WaitAndPatrol {
                     // 设定
                     const x = this.father.node.x + (Math.random() - 0.5) * 300
                     const y = this.father.node.y + (Math.random() - 0.5) * 300
-                    console.log(x)
-                    console.log(y)
                     this.randomTarget = {
                         x,
                         y,
@@ -46,7 +44,7 @@ class WaitAndPatrol {
                 if (distance > 0) {
                     this.father.status = '巡逻移动中'
                     // move
-                    moveTowardTarget.call(this.father, this.randomTarget, dt * this.speed)
+                    moveTowardTarget.call(this.father, this.randomTarget, this.speed)
                 } else {
                     console.log('arrive')
                     // 终止状态
@@ -69,6 +67,7 @@ cc.Class({
         viewRange: 100, // 视野范围
         attackRange: 10,
         patrolWaitMaxTime: 1,
+        maxHp: 50,
     },
 
     isInAttackRange(target) {
@@ -118,7 +117,7 @@ cc.Class({
         if (this.isInViewRange(this.global.player)) {
             this.status = '发现目标，过去！'
             // 移动过去
-            moveTowardTarget.call(this, this.global.player, dt * this.speed)
+            moveTowardTarget.call(this, this.global.player, this.speed)
             return true
         }
     },
@@ -132,9 +131,18 @@ cc.Class({
         this.waitAndPatrolRef.run(dt)
     },
 
+    checkDead() {
+        if (this.hp < 0) {
+            // this.onDestoryCallSpawn()
+            this.alive = false
+            this.node.destroy()
+            return true
+        }
+    },
+
     loop(dt) {
         // 侦测可以攻击的目标
-        const arr = [this.checkAttack.bind(this), this.checkRange.bind(this), this.waitAndPatrol.bind(this)]
+        const arr = [this.checkDead.bind(this), this.checkAttack.bind(this), this.checkRange.bind(this), this.waitAndPatrol.bind(this)]
         arr.some((func) => {
             if (func(dt)) {
                 // 有任何返回 true 了，就清空，因为需要重算巡逻
@@ -151,9 +159,14 @@ cc.Class({
     },
 
     start () {
+        this.hp = this.maxHp
     },
 
     update (dt) {
+        let lv = this.node.getComponent(cc.RigidBody).linearVelocity
+        lv.x = 0
+        lv.y = 0
+        this.node.getComponent(cc.RigidBody).linearVelocity = lv
         this.loop(dt)
     },
 });

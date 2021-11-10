@@ -46,7 +46,7 @@ cc.Class({
       type: cc.AudioClip
     },
     needScore: 100,
-    debugger: false
+    debuggerOpen: false
   },
 
   // newTimerBomb () {
@@ -70,7 +70,7 @@ cc.Class({
 
   onLoad() {
     cc.director.getPhysicsManager().enabled = true;
-    if (this.debugger) {
+    if (this.debuggerOpen) {
       cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
           cc.PhysicsManager.DrawBits.e_pairBit |
           cc.PhysicsManager.DrawBits.e_centerOfMassBit |
@@ -80,7 +80,8 @@ cc.Class({
     }
     cc.director.getPhysicsManager().gravity = cc.v2();
     window.global = {
-      player: this.Player
+      player: this.Player,
+      enemyRootChildrens: this.node.getChildByName('enemyRoot').children
     }
   },
 
@@ -96,7 +97,8 @@ cc.Class({
   },
 
   renderScore() {
-    this.playerScoreLabel.string = this.node.getChildByName('JinZhan').getComponent('JinZhan').status
+    // this.playerScoreLabel.string = this.node.getChildByName('enemyRoot').getChildByName('JinZhan').getComponent('JinZhan').status
+    this.playerScoreLabel.string = this.score.player
     this.aiScoreLabel.string = this.score.ai
   },
 

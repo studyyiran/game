@@ -5,6 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import {nodeAttackScript, realDistanceDiffMin} from "./util";
+
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -13,6 +15,8 @@ cc.Class({
             default: {},
         },
         maxHp: 100,
+        damage: 10,
+        attackRange: 10,
     },
 
     onKeyDownHandler(e) {
@@ -73,8 +77,27 @@ cc.Class({
                 }
                 this.toward.s = true
                 break;
+            case cc.macro.KEY.n:
+                // 攻击
+
+                console.log(this.enemyRoot)
+                this.enemyRoot.some((target) => {
+                    // 如果找到了
+                    if (this.isInAttackRange(target)) {
+                        nodeAttackScript(this, target.getComponent('JinZhan'))
+                        return true
+                    }
+
+                })
+                break;
 
         }
+    },
+
+    isInAttackRange(target) {
+        const distance = realDistanceDiffMin.call(this, target)
+        const bool = distance < this.attackRange
+        return bool
     },
 
     onKeyUpHandler(e) {
@@ -192,12 +215,14 @@ cc.Class({
     },
 
     onLoad() {
-        // 这个需要初始化
-        this.hp = this.maxHp
+
         // console.log(2)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDownHandler, this);
         // cc.systemEvent.on(cc.SystemEvent.EventType.KEY_PRESS, this.onKeyDownHandler, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUpHandler, this);
+        // 为了给敌人施加 debuff 所以需要获取敌人的引用
+        this.scriptAi = this.node.parent.getComponent('Game').Ai.getComponent('Ai')
+        this.enemyRoot = this.node.parent.getChildByName('enemyRoot').children
     },
 
     onEnable() {
@@ -208,9 +233,8 @@ cc.Class({
 
 
     start() {
-        // console.log(8)
-        // 为了给敌人施加 debuff 所以需要获取敌人的引用
-        this.scriptAi = this.node.parent.getComponent('Game').Ai.getComponent('Ai')
+        // 这个需要初始化
+        this.hp = this.maxHp
     },
 
     update(dt) {
