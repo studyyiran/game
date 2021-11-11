@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import {nodeAttackScript, realDistanceDiffMin} from "./util";
+import {scriptAttackScript, realDistanceDiffMin} from "./util";
 
 cc.Class({
     extends: cc.Component,
@@ -84,7 +84,7 @@ cc.Class({
                 this.enemyRoot.some((target) => {
                     // 如果找到了
                     if (this.isInAttackRange(target)) {
-                        nodeAttackScript(this, target.getComponent('JinZhan'))
+                        scriptAttackScript(this, target.getComponent('JinZhan'))
                         return true
                     }
 
