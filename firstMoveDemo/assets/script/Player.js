@@ -228,16 +228,21 @@ cc.Class({
     onEnable() {
         // console.log(5)
         // 每次重启游戏，出生
+        this.hp = this.maxHp
         this.node.setPosition(cc.v2(100, 0))
     },
 
 
     start() {
-        // 这个需要初始化
-        this.hp = this.maxHp
+        // 这个需要初始化(似乎每次重生的时候。，没有调用这个。额。按理说应该会调用 https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html)
+        // this.hp = this.maxHp
     },
 
     update(dt) {
+        //
+        if (this.hp < this.maxHp) {
+            this.hp = this.hp + 0.5;
+        }
         // console.log('u2')
         this.moveByToward(dt)
     },

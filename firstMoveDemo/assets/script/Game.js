@@ -98,6 +98,8 @@ cc.Class({
   },
 
   renderScore() {
+    // TODO 先写的随意一些。
+    this.node.getChildByName('ui').getChildByName('playerHp').getComponent(cc.Label).string = parseInt(this.Player.getComponent('Player').hp)
     // this.playerScoreLabel.string = this.node.getChildByName('enemyRoot').getChildByName('JinZhan').getComponent('JinZhan').status
     this.playerScoreLabel.string = this.score.player
     this.aiScoreLabel.string = this.score.ai
@@ -112,6 +114,11 @@ cc.Class({
     if (this.score.ai > this.needScore) {
       this.gameOverLabel.string = 'Game Over'
       cc.audioEngine.playEffect(this.scoreAudioAi, true);
+      this.stopGame()
+    }
+    // 玩家血量空
+    if (this.Player.getComponent('Player').hp <= 0) {
+      this.gameOverLabel.string = 'You Dead'
       this.stopGame()
     }
 
