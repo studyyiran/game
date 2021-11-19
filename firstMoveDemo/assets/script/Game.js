@@ -82,7 +82,8 @@ cc.Class({
     window.global = {
       player: this.Player,
       enemyRoot: this.node.getChildByName('enemyRoot'),
-      alliesRoot: this.node.getChildByName('alliesRoot')
+      alliesRoot: this.node.getChildByName('alliesRoot'),
+      enemyBullet: this.node.getChildByName('enemyBullet')
     }
   },
 

@@ -3,7 +3,8 @@
     "default",
     "player",
     "enemy",
-    "allies"
+    "allies",
+    "enemyBullet"
   ],
   "collision-matrix": [
     [
@@ -13,11 +14,6 @@
       false,
       true,
       true,
-      true
-    ],
-    [
-      false,
-      true,
       true,
       true
     ],
@@ -26,6 +22,20 @@
       true,
       true,
       true
+    ],
+    [
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    [
+      false,
+      true,
+      false,
+      true,
+      false
     ]
   ],
   "excluded-modules": [
