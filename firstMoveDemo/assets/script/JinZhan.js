@@ -17,10 +17,24 @@ import JinZhanEnemy from '../myClass/JinZhanClass'
 cc.Class({
     extends: JinZhanEnemy,
     ctor: function () {
-        console.log('JinZhan!!!')
+        console.log('JinZhan Enemy')
+        this.actionArr = [this.checkDead.bind(this), this.checkAttack.bind(this), this.checkRange.bind(this), this.missThePlayer.bind(this), this.waitAndPatrol.bind(this)]
+    },
+
+    properties: {
+        targetArr: {
+            get: function () {
+                if (window?.global?.player?.getComponent('Player')) {
+                    return [window.global.player.getComponent('Player'),  ...window?.global?.alliesRoot?.children?.map((node) => {
+                        return node.getComponent('A_JinZhan')
+                    })]
+                } else {
+                    return []
+                }
+            },
+        }
     },
 
     onLoad: function () {
-        this.targetArr = [window.global.player.getComponent('Player')]
     }
 });

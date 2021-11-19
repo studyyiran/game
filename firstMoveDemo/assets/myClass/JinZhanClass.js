@@ -56,9 +56,7 @@ class WaitAndPatrol {
 const NormalUnit = cc.Class({
     extends: cc.Component,
     ctor: function () {
-        console.log('NormalUnit')
-        this.targetArr = []
-        this.actionArr = [this.checkDead.bind(this), this.checkAttack.bind(this), this.checkRange.bind(this), this.waitAndPatrol.bind(this)]
+        console.log('NormalUnit ctor')
         this.isInAttackRange = this.isInAttackRange.bind(this)
         this.isInViewRange = this.isInViewRange.bind(this)
     },
@@ -100,6 +98,39 @@ const NormalUnit = cc.Class({
         }
     },
 
+    missThePlayer(dt) {
+        const target = this.checkRangeTarget
+        console.log(target)
+        const maxIntervalTime = 2
+        if (this.missThePlayerTimer <= 0) {
+            // 重置掉，放掉
+            this.missThePlayerTimer = undefined
+            return null
+        }
+        if (target && this.missThePlayerTimer  === undefined && this.lastAction?.includes("checkRange")) {
+            this.status = '追丢了，再找一段距离！'
+            this.missThePlayerTimer = maxIntervalTime
+            return true
+        }
+        if (target && this.missThePlayerTimer > 0) {
+            this.missThePlayerTimer -= dt
+            const percent = 1 - Math.pow((1 - this.missThePlayerTimer) / maxIntervalTime, 2)
+            // 移动过去
+            moveTowardTarget.call(this, target, this.speed * percent)
+            return true
+        }
+    },
+
+    checkFollowPlayer() {
+        const target = window.global.player
+        if (target) {
+            this.status = '发现玩家，跟随！'
+            // 移动过去
+            moveTowardTarget.call(this, target, this.speed)
+            return true
+        }
+    },
+
     checkAttack() {
         // 玩家是否在范围内，重新找到最近的
         const target = this.targetArr.find(this.isInAttackRange)
@@ -120,6 +151,11 @@ const NormalUnit = cc.Class({
 
         if (target) {
             this.status = '发现目标，过去！'
+            this.checkRangeTarget = {
+                x: target.node.x,
+                y: target.node.y,
+            }
+            console.log( this.checkRangeTarget)
             // 移动过去
             moveTowardTarget.call(this, target.node, this.speed)
             return true
@@ -127,7 +163,6 @@ const NormalUnit = cc.Class({
     },
 
     waitAndPatrol(dt) {
-        debugger
         // 如果当下有敌人，就返还
         const ifFind = this.targetArr.find((t) => {
 
@@ -160,6 +195,8 @@ const NormalUnit = cc.Class({
         // 侦测可以攻击的目标
         this.actionArr.some((func) => {
             if (func(dt)) {
+                console.log(func.name)
+                this.lastAction = func.name
                 // 有任何返回 true 了，就清空，因为需要重算巡逻
                 this.waitAndPatrolRef = null
                 return true

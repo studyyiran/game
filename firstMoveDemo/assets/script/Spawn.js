@@ -74,10 +74,10 @@ cc.Class({
       const {enemyRoot} = window.global
       const {children} = enemyRoot
       this.hehe = this.schedule(() => {
-        if (children.length < 5) {
+        if (children.length < 5) {// maxCount
           enemyRoot.addChild(this.makeNewThing2())
         }
-      }, 1)
+      }, 1)// interval
     }
   },
 

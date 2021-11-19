@@ -57,8 +57,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        100,
-        100,
+        -280.417,
+        -216.043,
         0,
         0,
         0,
@@ -84,7 +84,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "JinZhan<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 1
@@ -165,7 +165,7 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_density": 10000,
+    "_density": 10,
     "_sensor": false,
     "_friction": 0,
     "_restitution": 0,
@@ -175,7 +175,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 21,
+    "_radius": 20,
     "_id": ""
   },
   {
