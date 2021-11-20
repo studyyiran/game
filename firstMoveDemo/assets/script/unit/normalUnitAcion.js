@@ -37,7 +37,6 @@ class WaitAndPatrol {
                     // move
                     moveTowardTarget.call(this.father, this.randomTarget, this.father.getComponent('unit').speed)
                 } else {
-                    console.log('arrive')
                     // 终止状态
                     this.status = 'wait'
                     // 重置
@@ -48,24 +47,12 @@ class WaitAndPatrol {
     }
 }
 
-
-
-
 const NormalUnit = cc.Class({
     extends: cc.Component,
     ctor: function () {
         console.log('NormalUnit ctor')
         this.isInAttackRange = this.isInAttackRange.bind(this)
         this.isInViewRange = this.isInViewRange.bind(this)
-    },
-    properties: {
-        damage: 1, // 攻击力
-        attackInterval: 1, // 攻击间隔
-        speed: 100, // 移动速度
-        viewRange: 100, // 视野范围
-        attackRange: 10,
-        patrolWaitMaxTime: 1,
-        maxHp: 50,
     },
 
     // 找到攻击范围内的敌人
@@ -90,16 +77,20 @@ const NormalUnit = cc.Class({
     attack(target) {
         // 如果可以攻击
         if (!this.canNotAttack) {
-            // 近战攻击敌人
-            // scriptAttackScript(this, target)
-            // 远程攻击敌人
-            this.getComponent('bulletLauncher').fire(target)
+            if (this.getComponent('unit').meleeAttackDamage) {
+                // 近战攻击敌人
+                scriptAttackScript(this, target)
+            } else if (this.getComponent('unit').remoteAttackDamage) {
+                // 远程攻击敌人
+                this.getComponent('bulletLauncher').fire(target.node)
+            }
+
             // 设定 cd
             this.canNotAttack = true
             this.scheduleOnce(() => {
                 // 重置 CD
                 this.canNotAttack = false
-            }, this.attackInterval)
+            }, this.getComponent('unit').attackInterval)
             return true
         }
     },
@@ -145,6 +136,8 @@ const NormalUnit = cc.Class({
             if(this.attack(target)) {
                 return true
             }
+            // TODO 由于这块不返回 会导致去 missPlayer 的逻辑，所以我这块还是返回吧，含义就是，只要有敌人，就乖乖呆着，不搞事情
+            return true
         }
         return false
     },
@@ -188,7 +181,6 @@ const NormalUnit = cc.Class({
         // 侦测可以攻击的目标
         this.actionArr.some((func) => {
             if (func(dt)) {
-                console.log(func.name)
                 this.lastAction = func.name
                 // 有任何返回 true 了，就清空，因为需要重算巡逻
                 this.waitAndPatrolRef = null
@@ -196,6 +188,11 @@ const NormalUnit = cc.Class({
             }
             return false
         })
+    },
+
+    onDead() {
+        this.alive = false
+        this.node.destroy()
     },
 
     onLoad () {

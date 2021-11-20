@@ -35,7 +35,7 @@ cc.Class({
     onBeginContact: function (contact, selfCollider, otherCollider) {
         const targetScript = otherCollider.getComponent('unit')
         if (targetScript) {
-            targetScript.hp -= this.getComponent('unit').remoteAttackDamage
+            targetScript.hp -= this.node.damage || 1 // fire 的时候需要赋值
         }
         // 销毁子弹 并扣血
         this.dead()

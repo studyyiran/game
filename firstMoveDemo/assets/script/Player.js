@@ -10,13 +10,9 @@ import {scriptAttackScript, realDistanceDiffMin} from "./util";
 cc.Class({
     extends: cc.Component,
     properties: {
-        speed: 10,
         toward: {
             default: {},
         },
-        maxHp: 100,
-        damage: 10,
-        attackRange: 10,
     },
 
     onKeyDownHandler(e) {
@@ -43,12 +39,12 @@ cc.Class({
             case cc.macro.KEY.space:
                 if (!this.speedBuff) {
                     // 效果：速度 * 3
-                    this.speed = this.speed * 3
+                    this.getComponent('unit').speed = this.getComponent('unit').speed * 3
                     this.speedBuff = true
                     // 结束：若干秒后结束效果
                     setTimeout(() => {
                         this.speedBuff = false
-                        this.speed = this.speed / 3
+                        this.getComponent('unit').speed = this.getComponent('unit').speed / 3
                     }, 3000)
                     // 冷却：
                 }
@@ -78,13 +74,12 @@ cc.Class({
                 this.toward.s = true
                 break;
             case cc.macro.KEY.n:
+                debugger
                 // 攻击
-
-                console.log(this.enemyRoot)
-                this.enemyRoot.some((target) => {
+                window.global.enemyRoot.children.some((target) => {
                     // 如果找到了
                     if (this.isInAttackRange(target)) {
-                        scriptAttackScript(this, target.getComponent('JinZhan'))
+                        scriptAttackScript(this, target)
                         return true
                     }
 
@@ -96,7 +91,7 @@ cc.Class({
 
     isInAttackRange(target) {
         const distance = realDistanceDiffMin.call(this, target)
-        const bool = distance < this.attackRange
+        const bool = distance < this.getComponent('unit').meleeAttackRange
         return bool
     },
 
@@ -170,7 +165,7 @@ cc.Class({
             // this.node.y += this.towardY * this.speed * realDt
         }
 
-        let speed = this.speed
+        let speed = this.getComponent('unit').speed
         if (this.towardX && this.towardY) {
             // 走对角线要根号 2
             speed = speed / 1.414
@@ -207,11 +202,11 @@ cc.Class({
     },
 
     init() {
-        this.enabled = true
+        this.node.enabled = true
     },
 
     dead() {
-        this.enabled = false
+        this.node.enabled = false
     },
 
     onLoad() {
@@ -222,13 +217,13 @@ cc.Class({
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUpHandler, this);
         // 为了给敌人施加 debuff 所以需要获取敌人的引用
         this.scriptAi = this.node.parent.getComponent('Game').Ai.getComponent('Ai')
-        this.enemyRoot = this.node.parent.getChildByName('enemyRoot').children
+        this.getComponent('unit').onDead = this.dead.bind(this)
     },
 
     onEnable() {
         // console.log(5)
         // 每次重启游戏，出生
-        this.hp = this.maxHp
+        // this.hp = this.maxHp 这个应该让 maxHp 来做
         this.node.setPosition(cc.v2(100, 0))
     },
 
@@ -240,8 +235,9 @@ cc.Class({
 
     update(dt) {
         //
-        if (this.hp < this.maxHp) {
-            this.hp = this.hp + 0.5;
+        const target = this.getComponent('unit')
+        if (target.hp < target.maxHp) {
+            target.hp = target.hp + 0.5;
         }
         // console.log('u2')
         this.moveByToward(dt)

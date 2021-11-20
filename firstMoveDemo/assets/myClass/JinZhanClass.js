@@ -39,7 +39,6 @@ class WaitAndPatrol {
                     // move
                     moveTowardTarget.call(this.father, this.randomTarget, this.speed)
                 } else {
-                    console.log('arrive')
                     // 终止状态
                     this.status = 'wait'
                     // 重置
@@ -67,7 +66,6 @@ const NormalUnit = cc.Class({
         viewRange: 100, // 视野范围
         attackRange: 10,
         patrolWaitMaxTime: 1,
-        maxHp: 50,
     },
 
     isInAttackRange(target) {
@@ -86,6 +84,7 @@ const NormalUnit = cc.Class({
     attack(target) {
         // 如果可以攻击
         if (!this.canNotAttack) {
+            debugger
             // 攻击敌人
             scriptAttackScript(this, target)
             // 设定 cd
@@ -100,7 +99,6 @@ const NormalUnit = cc.Class({
 
     missThePlayer(dt) {
         const target = this.checkRangeTarget
-        console.log(target)
         const maxIntervalTime = 2
         if (this.missThePlayerTimer <= 0) {
             // 重置掉，放掉
@@ -140,6 +138,8 @@ const NormalUnit = cc.Class({
             if(this.attack(target)) {
                 return true
             }
+            // TODO 由于这块不返回 会导致去 missPlayer 的逻辑，所以我这块还是返回吧，含义就是，只要有敌人，就乖乖呆着，不搞事情
+            return true
         }
         return false
     },
@@ -155,7 +155,6 @@ const NormalUnit = cc.Class({
                 x: target.node.x,
                 y: target.node.y,
             }
-            console.log( this.checkRangeTarget)
             // 移动过去
             moveTowardTarget.call(this, target.node, this.speed)
             return true
@@ -175,15 +174,6 @@ const NormalUnit = cc.Class({
         this.waitAndPatrolRef.run(dt)
     },
 
-    checkDead() {
-        if (this.hp < 0) {
-            // this.onDestoryCallSpawn()
-            this.alive = false
-            this.node.destroy()
-            return true
-        }
-    },
-
     resetSpeed () {
         let lv = this.node.getComponent(cc.RigidBody).linearVelocity
         lv.x = 0
@@ -195,7 +185,6 @@ const NormalUnit = cc.Class({
         // 侦测可以攻击的目标
         this.actionArr.some((func) => {
             if (func(dt)) {
-                console.log(func.name)
                 this.lastAction = func.name
                 // 有任何返回 true 了，就清空，因为需要重算巡逻
                 this.waitAndPatrolRef = null
@@ -211,7 +200,6 @@ const NormalUnit = cc.Class({
     },
 
     start () {
-        this.hp = this.maxHp
         this.waitAndPatrolRef = null
     },
 

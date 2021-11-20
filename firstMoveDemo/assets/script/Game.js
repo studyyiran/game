@@ -81,9 +81,9 @@ cc.Class({
     cc.director.getPhysicsManager().gravity = cc.v2();
     window.global = {
       player: this.Player,
-      enemyRoot: this.node.getChildByName('enemyRoot'),
-      alliesRoot: this.node.getChildByName('alliesRoot'),
-      enemyBullet: this.node.getChildByName('enemyBullet')
+      enemyRoot: cc.find('root/enemyRoot', this.node),
+      alliesRoot: cc.find('root/alliesRoot', this.node),
+      enemyBullet: cc.find('root/enemyBullet', this.node),
     }
   },
 
@@ -100,7 +100,7 @@ cc.Class({
 
   renderScore() {
     // TODO 先写的随意一些。
-    this.node.getChildByName('ui').getChildByName('playerHp').getComponent(cc.Label).string = parseInt(this.Player.getComponent('Player').hp)
+    this.node.getChildByName('ui').getChildByName('playerHp').getComponent(cc.Label).string = parseInt(this.Player.getComponent('unit').hp)
     // this.playerScoreLabel.string = this.node.getChildByName('enemyRoot').getChildByName('JinZhan').getComponent('JinZhan').status
     this.playerScoreLabel.string = this.score.player
     this.aiScoreLabel.string = this.score.ai
@@ -118,7 +118,7 @@ cc.Class({
       this.stopGame()
     }
     // 玩家血量空
-    if (this.Player.getComponent('Player').hp <= 0) {
+    if (this.Player.getComponent('unit').hp <= 0) {
       this.gameOverLabel.string = 'You Dead'
       this.stopGame()
     }

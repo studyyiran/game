@@ -29,6 +29,8 @@ cc.Class({
             newBulltet.setPosition(cc.v2(this.node.x, this.node.y))
             // 设置速度
             moveTowardTarget.call({node: newBulltet}, target, 1000)
+            // 设置子弹伤害
+            newBulltet.damage = this.getComponent('unit').remoteAttackDamage
             // 添加到节点上
             window.global.enemyBullet.addChild(newBulltet)
         }
@@ -36,9 +38,7 @@ cc.Class({
     },
 
     start () {
-        this.schedule(() => {
-            this.fire(window.global.player)
-        }, 1)
+
     },
 
     update (dt) {

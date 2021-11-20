@@ -23,5 +23,7 @@ cc.Class({
     },
 
     onLoad: function () {
-    }
+        this.getComponent('unit').onDead = this.onDead.bind(this)
+    },
+
 });

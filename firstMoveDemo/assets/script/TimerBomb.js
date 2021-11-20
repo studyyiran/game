@@ -47,7 +47,6 @@ cc.Class({
     setSizeByPercent() {
         const percent = this.bombTime / this.bombMaxTime
         const size = 50 + this.maxSize * percent
-        // console.log(this.bombTime)
         this.node.width = size
         this.node.height = size
     },

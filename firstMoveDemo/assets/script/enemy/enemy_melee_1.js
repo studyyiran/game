@@ -5,20 +5,20 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 // import {JinZhanEnemy} from "../myClass/JinZhanClass";
-// console.log(JinZhanEnemy)
 
 // cc.Class({
 //     extends: cc.JinZhanEnemy,
 // })
 // import Parent from './JinZhanParent'
-import JinZhanEnemy from '../myClass/JinZhanClass'
+
+import normalUnitAcion from '../unit/normalUnitAcion'
 
 
 cc.Class({
-    extends: JinZhanEnemy,
+    extends: normalUnitAcion,
     ctor: function () {
         console.log('JinZhan Enemy')
-        this.actionArr = [this.checkDead.bind(this), this.checkAttack.bind(this), this.checkRange.bind(this), this.missThePlayer.bind(this), this.waitAndPatrol.bind(this)]
+        this.actionArr = [this.checkAttack.bind(this), this.checkRange.bind(this), this.missThePlayer.bind(this), this.waitAndPatrol.bind(this)]
     },
 
     properties: {
@@ -36,5 +36,6 @@ cc.Class({
     },
 
     onLoad: function () {
+        this.getComponent('unit').onDead = this.onDead.bind(this)
     }
 });

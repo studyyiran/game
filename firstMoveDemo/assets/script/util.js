@@ -28,7 +28,8 @@ export function moveTowardTarget (target, stepDistance) {
     // this.node.y -= Math.cos(angle2) * stepDistance;
 }
 
-export function scriptAttackScript (a, b) {
-    b.hp = b.hp - a.damage
-    console.log('剩余 hp' + b.hp)
+export function scriptAttackScript (myScriptIsThis, targetNode) {
+    const damage = myScriptIsThis.getComponent('unit').meleeAttackDamage
+    const targetUnit = targetNode.getComponent('unit')
+    targetUnit.hp = targetUnit.hp - damage
 }
