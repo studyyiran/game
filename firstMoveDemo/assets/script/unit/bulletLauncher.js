@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import {moveTowardTarget} from "./util";
+import {moveTowardTarget} from "../util";
 
 cc.Class({
     extends: cc.Component,

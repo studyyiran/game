@@ -9,7 +9,7 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        damage: 60,
+        // damage: 60,
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -33,9 +33,9 @@ cc.Class({
 
     // 只在两个碰撞体开始接触时被调用一次
     onBeginContact: function (contact, selfCollider, otherCollider) {
-        const targetScript = otherCollider.getComponent('Player')
+        const targetScript = otherCollider.getComponent('unit')
         if (targetScript) {
-            targetScript.hp -= this.damage
+            targetScript.hp -= this.getComponent('unit').remoteAttackDamage
         }
         // 销毁子弹 并扣血
         this.dead()
