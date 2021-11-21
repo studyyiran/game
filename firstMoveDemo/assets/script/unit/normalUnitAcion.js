@@ -50,10 +50,9 @@ class WaitAndPatrol {
 const NormalUnit = cc.Class({
     extends: cc.Component,
     ctor: function () {
-        console.log('NormalUnit ctor')
+        console.log('test0')
         this.isInAttackRange = this.isInAttackRange.bind(this)
         this.isInViewRange = this.isInViewRange.bind(this)
-        this.getComponent('unit').addOnDead(this.dead.bind(this))
     },
 
     // 找到攻击范围内的敌人
@@ -197,8 +196,7 @@ const NormalUnit = cc.Class({
     },
 
     onLoad () {
-        // 获得玩家。
-        this.global = window.global
+        this?.node?.getComponent?.('unit').addOnDead(this.onDead.bind(this))
     },
 
     start () {

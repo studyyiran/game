@@ -84,7 +84,6 @@ const NormalUnit = cc.Class({
     attack(target) {
         // 如果可以攻击
         if (!this.canNotAttack) {
-            debugger
             // 攻击敌人
             scriptAttackScript(this, target)
             // 设定 cd

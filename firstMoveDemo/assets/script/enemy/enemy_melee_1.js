@@ -34,7 +34,4 @@ cc.Class({
             },
         }
     },
-
-    onLoad: function () {
-    }
 });

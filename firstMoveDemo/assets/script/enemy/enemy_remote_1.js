@@ -21,8 +21,4 @@ cc.Class({
             },
         }
     },
-
-    onLoad: function () {
-    },
-
 });

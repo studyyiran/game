@@ -8,6 +8,14 @@
 cc.Class({
     extends: cc.Component,
 
+    ctor: function () {
+        if (!this.onDeadArr) {
+            this.init([])
+
+        }
+
+    },
+
     properties: {
         speed: 500, // 移动速度
         maxHp: 100, // 最大生命值
@@ -17,20 +25,27 @@ cc.Class({
         patrolWaitMaxTime: 1, // 目标范围内没有敌人时，每次巡逻的时间
         remoteAttackDamage: 0,
         remoteAttackRange: 0,
-
         attackInterval: 1, // 攻击间隔
-
-
         attackRange: 10,
+    },
+
+    init: function (arr) {
+        this.onDeadArr = arr
     },
 
     // LIFE-CYCLE CALLBACKS:
     addOnDead(fn) {
-        this.onDeadArr.push(fn)
+        debugger
+        if (this.onDeadArr) {
+            this.onDeadArr.push(fn)
+        } else {
+            this.init([fn])
+        }
     },
 
     checkDead() {
         if (this.hp < 0) {
+            debugger
             this.onDeadArr.map(fn => fn())
         }
     },
@@ -38,7 +53,6 @@ cc.Class({
     onLoad () {
         //
         this.hp = this.maxHp
-        this.onDeadArr = []
     },
 
     start () {

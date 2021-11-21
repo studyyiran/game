@@ -74,7 +74,6 @@ cc.Class({
                 this.toward.s = true
                 break;
             case cc.macro.KEY.n:
-                debugger
                 // 攻击
                 window.global.enemyRoot.children.some((target) => {
                     // 如果找到了

@@ -129,7 +129,7 @@ cc.Class({
     this.gameOverLabel.node.active = true
     this.startButton.active = true
     this.Ai.getComponent('Ai').dead()
-    this.Player.getComponent('Player').dead()
+    this.Player.getComponent('Player').onDead()
     this.Spawn.getComponent('Spawn').dead()
     this.enabled = false
   },
