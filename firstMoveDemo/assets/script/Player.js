@@ -205,7 +205,7 @@ cc.Class({
         this.node.enabled = true
     },
 
-    dead() {
+    onDead() {
         this.node.enabled = false
     },
 
@@ -217,7 +217,7 @@ cc.Class({
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUpHandler, this);
         // 为了给敌人施加 debuff 所以需要获取敌人的引用
         this.scriptAi = this.node.parent.getComponent('Game').Ai.getComponent('Ai')
-        this.getComponent('unit').onDead = this.dead.bind(this)
+        this.getComponent('unit').addOnDead(this.onDead.bind(this))
     },
 
     onEnable() {

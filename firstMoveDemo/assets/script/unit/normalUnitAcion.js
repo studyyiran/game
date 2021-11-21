@@ -53,6 +53,7 @@ const NormalUnit = cc.Class({
         console.log('NormalUnit ctor')
         this.isInAttackRange = this.isInAttackRange.bind(this)
         this.isInViewRange = this.isInViewRange.bind(this)
+        this.getComponent('unit').addOnDead(this.dead.bind(this))
     },
 
     // 找到攻击范围内的敌人

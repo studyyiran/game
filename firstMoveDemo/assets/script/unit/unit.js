@@ -25,16 +25,20 @@ cc.Class({
     },
 
     // LIFE-CYCLE CALLBACKS:
+    addOnDead(fn) {
+        this.onDeadArr.push(fn)
+    },
 
     checkDead() {
         if (this.hp < 0) {
-            this.onDead?.()
+            this.onDeadArr.map(fn => fn())
         }
     },
 
     onLoad () {
         //
         this.hp = this.maxHp
+        this.onDeadArr = []
     },
 
     start () {

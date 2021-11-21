@@ -5,6 +5,51 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+
+class test {
+  constructor(unitPrefab) {
+    this.unitPrefab = unitPrefab
+    this.list = []
+  }
+
+
+  getBirthPlace() {
+    const type = 'inScreen'
+    switch(type) {
+      case "inScreen":
+        // 获取一个随机 x
+        const x = (Math.random() - 0.5) * game.width
+        // 获取一个随机 y
+        const y = (Math.random() - 0.5) * game.height
+        // 设置位置
+        return cc.v2(x, y)
+    }
+  }
+
+  make() {
+    // 生成
+    const newUnit = cc.instantiate(this.unitPrefab)
+    // 出生范围
+    newUnit.setPosition(this.getBirthPlace())
+    // 放入队列中
+    this.list.push(newUnit)
+    // 设置死亡
+    newUnit.getComponent('unit').addDead(() => {
+      // 从队列里面删除
+      this.list = this.list.filter((instance) => {
+        return instance !== newUnit
+      })
+    })
+
+    // 设置销毁回调 spawn
+    timerBomb.getComponent('TimerBomb').onDestoryCallSpawn = () => {
+      this.timerBombCount = this.timerBombCount - 1
+
+    }
+
+  }
+}
+
 cc.Class({
   extends: cc.Component,
 
@@ -102,6 +147,8 @@ cc.Class({
       this.timerCount = 0
       // 技数++
       this.timerBombCount++
+      console.log(this.timerBombCount)
+      console.log("max is" + this.timerBombMax)
       // console.log('get it' + this.timerBombCount)
       this.node.parent.addChild(this.makeNewThing())
     }
