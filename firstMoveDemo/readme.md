@@ -72,6 +72,7 @@ DONE
 4 用户血量的 ui（数字简单版）
 5 抽出来 unit 来处理血量
 6 完成了远程部队的 prefab
+7 spawn 抽象 可以让 spawn 生成多种类型的敌人部队，还有自己的部队
 
 
 TODO
@@ -85,7 +86,7 @@ TODO
 
 
 DOING
-1 spawn 抽象 可以让 spawn 生成多种类型的敌人部队，还有自己的部队
+
 
 
 PROCESS

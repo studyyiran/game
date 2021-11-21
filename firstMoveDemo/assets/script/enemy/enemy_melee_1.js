@@ -17,7 +17,7 @@ import normalUnitAcion from '../unit/normalUnitAcion'
 cc.Class({
     extends: normalUnitAcion,
     ctor: function () {
-        console.log('JinZhan Enemy')
+        console.log('JinZhan Enemy ~~~~')
         this.actionArr = [this.checkAttack.bind(this), this.checkRange.bind(this), this.missThePlayer.bind(this), this.waitAndPatrol.bind(this)]
     },
 
@@ -26,7 +26,7 @@ cc.Class({
             get: function () {
                 if (window?.global?.player?.getComponent('Player')) {
                     return [window.global.player.getComponent('Player'),  ...window?.global?.alliesRoot?.children?.map((node) => {
-                        return node.getComponent('A_JinZhan')
+                        return node.getComponent('unit')
                     })]
                 } else {
                     return []

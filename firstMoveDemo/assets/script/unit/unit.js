@@ -11,14 +11,13 @@ cc.Class({
     ctor: function () {
         if (!this.onDeadArr) {
             this.init([])
-
         }
-
+        this.deadCondition = () => this.hp <= 0
     },
 
     properties: {
-        speed: 500, // 移动速度
-        maxHp: 100, // 最大生命值
+        speed: 50, // 移动速度
+        maxHp: 10, // 最大生命值
         viewRange: 100, // 视野范围
         meleeAttackDamage: 0,
         meleeAttackRange: 0,
@@ -33,6 +32,10 @@ cc.Class({
         this.onDeadArr = arr
     },
 
+    setDeadCondition(fn) {
+        this.deadCondition = fn
+    },
+
     // LIFE-CYCLE CALLBACKS:
     addOnDead(fn) {
         if (this.onDeadArr) {
@@ -43,14 +46,23 @@ cc.Class({
     },
 
     checkDead() {
-        if (this.hp < 0) {
+        if (this.deadCondition() && this.status) {
+            this.status = false
             this.onDeadArr.map(fn => fn())
         }
+    },
+
+    dead() {
+      if (this.status) {
+          this.status = false
+          this.onDeadArr.map(fn => fn())
+      }
     },
 
     onLoad () {
         //
         this.hp = this.maxHp
+        this.status = true
     },
 
     start () {

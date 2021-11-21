@@ -81,10 +81,12 @@ cc.Class({
     cc.director.getPhysicsManager().gravity = cc.v2();
     window.global = {
       player: this.Player,
+      ai: this.Ai,
       enemyRoot: cc.find('root/enemyRoot', this.node),
       alliesRoot: cc.find('root/alliesRoot', this.node),
       enemyBullet: cc.find('root/enemyBullet', this.node),
       canvas: this.node,
+      game: this
     }
   },
 

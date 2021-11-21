@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import {realDistanceDiffMin} from './util'
+import {realDistanceDiffMin} from '../util'
 
 cc.Class({
     extends: cc.Component,
@@ -17,30 +17,25 @@ cc.Class({
 
     getDistance () {
         // 获取 player
-        const ccNodePlayer = this.gameScript.Player
-        const ccNodeAi = this.gameScript.Ai
-
+        const ccNodePlayer = window.global.player
+        const ccNodeAi = window.global.ai
         // 计算距离
         if (realDistanceDiffMin.call(this, ccNodePlayer) < 0) {
-            this.gameScript.gainScore(ccNodePlayer)
+            window.global.game.gainScore(ccNodePlayer)
             this.whenPickUp()
         }
         if (realDistanceDiffMin.call(this, ccNodeAi) < 0) {
-            this.gameScript.gainScore(ccNodeAi)
+            window.global.game.gainScore(ccNodeAi)
             this.whenPickUp()
         }
     },
 
     whenPickUp() {
-        this.dead()
+        this.onDead()
     },
 
-    checkHaveBomb() {
-        if (this.bombTime >= this.bombMaxTime) {
-            this.dead()
-        }
-
-        this.bombTime++
+    checkHaveBomb(dt) {
+        this.bombTime += dt
         this.setSizeByPercent()
     },
 
@@ -51,18 +46,18 @@ cc.Class({
         this.node.height = size
     },
 
-    dead() {
-        this.onDestoryCallSpawn()
+    onDead() {
         this.alive = false
         this.node.destroy()
+        this?.node?.getComponent?.('unit').dead()
     },
 
     onLoad() {
-        this.gameScript =this.node.parent.getComponent('Game')
+        this?.node?.getComponent?.('unit').setDeadCondition(() => this.bombTime >= this.bombMaxTime)
+        this?.node?.getComponent?.('unit').addOnDead(this.onDead.bind(this))
     },
 
     start () {
-
         this.bombTime = 0
         this.alive = true
         this.setSizeByPercent()
@@ -75,6 +70,6 @@ cc.Class({
             return
         }
         // 计算爆炸倒计时
-        this.checkHaveBomb()
+        this.checkHaveBomb(dt)
     },
 });

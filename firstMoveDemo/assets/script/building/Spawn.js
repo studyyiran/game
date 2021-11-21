@@ -7,20 +7,39 @@
 
 
 class makeAUnit {
-  constructor({unitPrefab, root}) {
+  constructor({unitPrefab, root, fatherNode}) {
     this.unitPrefab = unitPrefab
     this.root = root
+    this.fatherNode = fatherNode
   }
 
 
-  getBirthPlace() {
+  getBirthPlace({birthPlace}) {
     const type = 'inScreen'
-    switch(type) {
+    let x
+    let y
+    switch (birthPlace) {
+      case "player":
+        const range = 200
+        // 获取一个随机 x
+        x = (Math.random() - 0.5) * range
+        // 获取一个随机 y
+        y = (Math.random() - 0.5) * range
+        // 设置位置
+        return cc.v2(x + window.global.player.x, y + window.global.player.y)
+      case "origin":
+        // 这个当处于相对位置的时候（spawn 作为其他人的子节点）会有问题
+        // 获取一个随机 x
+        x = this.fatherNode.x
+        // 获取一个随机 y
+        y = this.fatherNode.y
+        // 设置位置
+        return cc.v2(x, y)
       case "inScreen":
         // 获取一个随机 x
-        const x = (Math.random() - 0.5) * window.global.canvas.width
+        x = (Math.random() - 0.5) * window.global.canvas.width
         // 获取一个随机 y
-        const y = (Math.random() - 0.5) * window.global.canvas.height
+        y = (Math.random() - 0.5) * window.global.canvas.height
         // 设置位置
         return cc.v2(x, y)
     }
@@ -47,6 +66,8 @@ cc.Class({
     },
     interval: 0,
     maxCount: 0,
+    enemyForce: 1,
+    birthPlace: "inScreen",
   },
 
   // 初始化
@@ -58,8 +79,8 @@ cc.Class({
 
   onLoad() {
     // TODO 阵营怎么去做，是个问题。再说
-    const maker = new makeAUnit({unitPrefab: this.unitPrefab, root:  window.global.enemyRoot})
-    this.make = () => maker.make()
+    const maker = new makeAUnit({fatherNode: this.node, unitPrefab: this.unitPrefab, root: this.enemyForce ? window.global.enemyRoot :  window.global.alliesRoot})
+    this.make = () => maker.make({birthPlace: this.birthPlace})
     this.init()
   },
 

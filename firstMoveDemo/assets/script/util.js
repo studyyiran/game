@@ -9,6 +9,10 @@ export function realDistanceDiffMin (ccNode) {
 
 
 export function moveTowardTarget (target, stepDistance) {
+    if (!stepDistance) {
+        console.error('moveTowardTarget no speed')
+        return null
+    }
     if (!target) {
         return null
     }

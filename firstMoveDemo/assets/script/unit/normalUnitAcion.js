@@ -50,7 +50,6 @@ class WaitAndPatrol {
 const NormalUnit = cc.Class({
     extends: cc.Component,
     ctor: function () {
-        console.log('test0')
         this.isInAttackRange = this.isInAttackRange.bind(this)
         this.isInViewRange = this.isInViewRange.bind(this)
     },
@@ -122,7 +121,7 @@ const NormalUnit = cc.Class({
         if (target) {
             this.status = '发现玩家，跟随！'
             // 移动过去
-            moveTowardTarget.call(this, target, this.speed)
+            moveTowardTarget.call(this, target, this.getComponent('unit').speed)
             return true
         }
     },
@@ -191,6 +190,7 @@ const NormalUnit = cc.Class({
     },
 
     onDead() {
+        debugger
         this.alive = false
         this.node.destroy()
     },

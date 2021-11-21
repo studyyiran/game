@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "enemy_yuancheng_1",
+    "_name": "TimerBomb",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -27,19 +27,10 @@
       },
       {
         "__id__": 4
-      },
-      {
-        "__id__": 5
-      },
-      {
-        "__id__": 6
-      },
-      {
-        "__id__": 7
       }
     ],
     "_prefab": {
-      "__id__": 8
+      "__id__": 5
     },
     "_opacity": 255,
     "_color": {
@@ -51,8 +42,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 110,
-      "height": 150
+      "width": 100,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -70,9 +61,9 @@
         0,
         0,
         1,
-        0.5,
-        0.5,
-        0.5
+        1,
+        1,
+        1
       ]
     },
     "_eulerAngles": {
@@ -84,8 +75,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 2,
-    "groupIndex": 2,
+    "_groupIndex": 0,
+    "groupIndex": 0,
     "_id": ""
   },
   {
@@ -104,7 +95,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "d950bb79-692b-4bbb-a84c-c7a9b8799198"
+      "__uuid__": "0f0cddeb-5f74-451e-89ae-8ee9437e91fc"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -121,73 +112,15 @@
     "_id": ""
   },
   {
-    "__type__": "920ddmcFm9I3L4apOvLK91d",
+    "__type__": "c3ed80ptmxEGaZKCkjUVc+F",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "_id": ""
-  },
-  {
-    "__type__": "03084bAg+ZA9YInfOJiyoQO",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "bullet": {
-      "__uuid__": "77e96b73-b31c-4f76-b35f-835ffd129890"
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "cc.RigidBody",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_type": 2,
-    "_allowSleep": true,
-    "_gravityScale": 1,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": true,
-    "enabledContactListener": false,
-    "bullet": false,
-    "awakeOnLoad": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PhysicsCircleCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 0,
-    "_density": 1,
-    "_sensor": false,
-    "_friction": 0,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_radius": 70,
+    "bombMaxTime": 3,
+    "maxSize": 150,
     "_id": ""
   },
   {
@@ -198,16 +131,16 @@
       "__id__": 1
     },
     "_enabled": true,
-    "speed": 200,
-    "maxHp": 15,
-    "viewRange": 200,
+    "speed": 0,
+    "maxHp": 1,
+    "viewRange": 0,
     "meleeAttackDamage": 0,
     "meleeAttackRange": 0,
-    "patrolWaitMaxTime": 1,
-    "remoteAttackDamage": 15,
-    "remoteAttackRange": 100,
-    "attackInterval": 0.8,
-    "attackRange": 10,
+    "patrolWaitMaxTime": 0,
+    "remoteAttackDamage": 0,
+    "remoteAttackRange": 0,
+    "attackInterval": 0,
+    "attackRange": 0,
     "_id": ""
   },
   {
@@ -216,9 +149,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "3970ab7d-77c1-4c2b-b573-49cc9be80afa"
+      "__uuid__": "ea146fd1-a894-49d7-8f55-8e440f4d43a4"
     },
-    "fileId": "a2Cm0RJKNI+KK8ov86b/y1",
+    "fileId": "18pDmo4gJD5Z2n3TbZA2qY",
     "sync": false
   }
 ]
