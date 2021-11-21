@@ -6,10 +6,10 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 
-class test {
-  constructor(unitPrefab) {
+class makeAUnit {
+  constructor({unitPrefab, root}) {
     this.unitPrefab = unitPrefab
-    this.list = []
+    this.root = root
   }
 
 
@@ -18,35 +18,22 @@ class test {
     switch(type) {
       case "inScreen":
         // 获取一个随机 x
-        const x = (Math.random() - 0.5) * game.width
+        const x = (Math.random() - 0.5) * window.global.canvas.width
         // 获取一个随机 y
-        const y = (Math.random() - 0.5) * game.height
+        const y = (Math.random() - 0.5) * window.global.canvas.height
         // 设置位置
         return cc.v2(x, y)
     }
   }
 
-  make() {
+  make(config) {
     // 生成
     const newUnit = cc.instantiate(this.unitPrefab)
     // 出生范围
-    newUnit.setPosition(this.getBirthPlace())
-    // 放入队列中
-    this.list.push(newUnit)
-    // 设置死亡
-    newUnit.getComponent('unit').addDead(() => {
-      // 从队列里面删除
-      this.list = this.list.filter((instance) => {
-        return instance !== newUnit
-      })
-    })
-
-    // 设置销毁回调 spawn
-    timerBomb.getComponent('TimerBomb').onDestoryCallSpawn = () => {
-      this.timerBombCount = this.timerBombCount - 1
-
-    }
-
+    newUnit.setPosition(this.getBirthPlace(config))
+    // 添加到节点
+    this.root.addChild(newUnit)
+    return newUnit
   }
 }
 
@@ -54,103 +41,54 @@ cc.Class({
   extends: cc.Component,
 
   properties: {
-    TimerBomb: {
+    unitPrefab: {
       default: null,
       type: cc.Prefab
     },
-    JinZhan: {
-      default: null,
-      type: cc.Prefab
-    },
-    interval: 300,
-    timerBombMax: 2
+    interval: 0,
+    maxCount: 0,
   },
 
-  makeNewThing () {
-    const timerBomb = cc.instantiate(this.TimerBomb)
-    const game = this.node.parent
-    // 获取一个随机 x
-    const x = (Math.random() - 0.5) * game.width
-    // 获取一个随机 y
-    const y = (Math.random() - 0.5) * game.height
-    // 设置位置
-    timerBomb.setPosition(cc.v2(x, y))
-    // 保存在队列中
-    this.timerBomList.push(timerBomb)
-    // 设置销毁回调 spawn
-    timerBomb.getComponent('TimerBomb').onDestoryCallSpawn = () => {
-      this.timerBombCount = this.timerBombCount - 1
-      // 从队列里面删除
-      this.timerBomList = this.timerBomList.filter((instance) => {
-        return instance !== timerBomb
-      })
-    }
-    // console.log(this.timerBomList)
-    return timerBomb
-  },
-
-  makeNewThing2 () {
-    const timerBomb = cc.instantiate(this.JinZhan)
-    const game = this.node.parent
-    // 获取一个随机 x
-    const x = (Math.random() - 0.5) * game.width
-    // 获取一个随机 y
-    const y = (Math.random() - 0.5) * game.height
-    // 设置位置
-    timerBomb.setPosition(cc.v2(x, y))
-    // 保存在队列中
-    this.timerBomList.push(timerBomb)
-
-    // 添加上去
-    return timerBomb
-  },
-
+  // 初始化
   init() {
-    // 初始化
-    this.timerCount = 0
-    this.timerBombCount = 0
-
-    this.timerBomList = []
+    this.processTimer = 0 // 生产进度
+    this.list = []
     this.enabled = true
   },
 
   onLoad() {
-    if (!this.hehe) {
-      const {enemyRoot} = window.global
-      const {children} = enemyRoot
-      this.hehe = this.schedule(() => {
-        if (children.length < 5) {// maxCount
-          enemyRoot.addChild(this.makeNewThing2())
-        }
-      }, 1)// interval
-    }
+    // TODO 阵营怎么去做，是个问题。再说
+    const maker = new makeAUnit({unitPrefab: this.unitPrefab, root:  window.global.enemyRoot})
+    this.make = () => maker.make()
+    this.init()
   },
 
   start () {
-    this.init()
+
   },
 
   dead() {
     this.enabled = false
-    this.timerBomList.forEach((node) => node?.destroy())
   },
 
   update (dt) {
-    this.timerCount += 1
-  // console.log(this.timerCount)
-    if (
-      this.timerCount > this.interval &&
-      this.timerBombCount < this.timerBombMax
-    ) {
-
-      // 重置计时器
-      this.timerCount = 0
-      // 技数++
-      this.timerBombCount++
-      console.log(this.timerBombCount)
-      console.log("max is" + this.timerBombMax)
-      // console.log('get it' + this.timerBombCount)
-      this.node.parent.addChild(this.makeNewThing())
+    // 如果 count 在范围内
+    if (this.list.length < this.maxCount) {
+      this.processTimer += dt
+      // 如果到达了
+      if (this.processTimer > this.interval) {
+        this.processTimer = 0
+        const newUnit = this.make()
+        // 放入队列中
+        this.list.push(newUnit)
+        // 设置死亡
+        newUnit.getComponent('unit').addOnDead(() => {
+          // 从队列里面删除
+          this.list = this.list.filter((instance) => {
+            return instance !== newUnit
+          })
+        })
+      }
     }
   }
 })

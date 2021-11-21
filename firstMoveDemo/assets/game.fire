@@ -632,8 +632,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        542.003,
-        449.861,
+        398.851,
+        -11.02,
         0,
         0,
         0,
@@ -697,14 +697,11 @@
       "__id__": 14
     },
     "_enabled": true,
-    "TimerBomb": {
-      "__uuid__": "ea146fd1-a894-49d7-8f55-8e440f4d43a4"
-    },
-    "JinZhan": {
+    "unitPrefab": {
       "__uuid__": "9b74fa16-1a4a-4723-a1d7-0b7539525393"
     },
-    "interval": 10,
-    "timerBombMax": 15,
+    "interval": 1,
+    "maxCount": 3,
     "_id": "3fGcDASpNAloMR+G0ufSlK"
   },
   {

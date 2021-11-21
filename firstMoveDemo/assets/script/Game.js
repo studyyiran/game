@@ -84,6 +84,7 @@ cc.Class({
       enemyRoot: cc.find('root/enemyRoot', this.node),
       alliesRoot: cc.find('root/alliesRoot', this.node),
       enemyBullet: cc.find('root/enemyBullet', this.node),
+      canvas: this.node,
     }
   },
 
@@ -130,7 +131,7 @@ cc.Class({
     this.startButton.active = true
     this.Ai.getComponent('Ai').dead()
     this.Player.getComponent('Player').onDead()
-    this.Spawn.getComponent('Spawn').dead()
+    // this.Spawn.getComponent('Spawn').dead()
     this.enabled = false
   },
 
@@ -141,7 +142,7 @@ cc.Class({
     this.gameOverLabel.node.active = false
     this.startButton.active = false
     // 启动
-    this.Spawn.getComponent('Spawn').init()
+    // this.Spawn.getComponent('Spawn').init()
     this.Player.getComponent('Player').init()
     // this.Ai.getComponent('Ai').init()
     this.enabled = true

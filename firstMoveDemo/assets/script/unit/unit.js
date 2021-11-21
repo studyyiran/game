@@ -35,7 +35,6 @@ cc.Class({
 
     // LIFE-CYCLE CALLBACKS:
     addOnDead(fn) {
-        debugger
         if (this.onDeadArr) {
             this.onDeadArr.push(fn)
         } else {
@@ -45,7 +44,6 @@ cc.Class({
 
     checkDead() {
         if (this.hp < 0) {
-            debugger
             this.onDeadArr.map(fn => fn())
         }
     },
