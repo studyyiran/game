@@ -84,6 +84,7 @@ cc.Class({
       ai: this.Ai,
       enemyRoot: cc.find('root/enemyRoot', this.node),
       alliesRoot: cc.find('root/alliesRoot', this.node),
+      neutralRoot: cc.find('root/neutralRoot', this.node),
       enemyBullet: cc.find('root/enemyBullet', this.node),
       canvas: this.node,
       game: this

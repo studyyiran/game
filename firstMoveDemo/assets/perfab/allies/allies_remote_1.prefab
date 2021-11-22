@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "JinZhan",
+    "_name": "allies_remote_1",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -33,10 +33,13 @@
       },
       {
         "__id__": 6
+      },
+      {
+        "__id__": 7
       }
     ],
     "_prefab": {
-      "__id__": 7
+      "__id__": 8
     },
     "_opacity": 255,
     "_color": {
@@ -48,8 +51,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 40,
-      "height": 40
+      "width": 11,
+      "height": 15
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -60,16 +63,16 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -280.417,
-        -216.043,
+        0,
+        0,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
-        1
+        0.5,
+        0.5,
+        0.5
       ]
     },
     "_eulerAngles": {
@@ -81,13 +84,13 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 2,
-    "groupIndex": 2,
+    "_groupIndex": 3,
+    "groupIndex": 3,
     "_id": ""
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "JinZhan<Sprite>",
+    "_name": "allies_remote_1<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 1
@@ -101,7 +104,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "314403a8-1da1-4959-b2c8-b19cc3174420"
+      "__uuid__": "dfac3155-c4d6-4ed8-b432-1c314a5faeb1"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -151,7 +154,7 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_density": 10,
+    "_density": 1,
     "_sensor": false,
     "_friction": 0,
     "_restitution": 0,
@@ -161,7 +164,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 20,
+    "_radius": 70,
     "_id": ""
   },
   {
@@ -173,19 +176,32 @@
     },
     "_enabled": true,
     "speed": 200,
-    "maxHp": 2500,
-    "viewRange": 150,
-    "meleeAttackDamage": 6,
-    "meleeAttackRange": 10,
+    "maxHp": 15,
+    "viewRange": 200,
+    "meleeAttackDamage": 0,
+    "meleeAttackRange": 0,
     "patrolWaitMaxTime": 1,
-    "remoteAttackDamage": 0,
-    "remoteAttackRange": 0,
-    "attackInterval": 1,
+    "remoteAttackDamage": 15,
+    "remoteAttackRange": 100,
+    "attackInterval": 0.8,
     "attackRange": 10,
     "_id": ""
   },
   {
-    "__type__": "9ff197DFrxA+JfO50j0x8mj",
+    "__type__": "03084bAg+ZA9YInfOJiyoQO",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "bullet": {
+      "__uuid__": "d1193eaa-1fbc-4f61-ba94-00d96ee75d97"
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "ee72aSyMVhF86IhXZ9cHWN9",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -200,9 +216,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9b74fa16-1a4a-4723-a1d7-0b7539525393"
+      "__uuid__": "7d3b05f3-3f2b-4d75-aef8-fbad33e27dc2"
     },
-    "fileId": "98vkeJh9FDCbWfp67ySz55",
+    "fileId": "73hd+byC9NfKBiaY4HsAcm",
     "sync": false
   }
 ]

@@ -66,7 +66,7 @@ cc.Class({
     },
     interval: 0,
     maxCount: 0,
-    enemyForce: 1,
+    enemyForce: 0,
     birthPlace: "inScreen",
   },
 
@@ -78,8 +78,19 @@ cc.Class({
   },
 
   onLoad() {
-    // TODO 阵营怎么去做，是个问题。再说
-    const maker = new makeAUnit({fatherNode: this.node, unitPrefab: this.unitPrefab, root: this.enemyForce ? window.global.enemyRoot :  window.global.alliesRoot})
+    let root
+    switch (this.enemyForce) {
+      case 0:
+        root = window.global.enemyRoot
+        break
+      case 1:
+        root = window.global.alliesRoot
+        break
+      case 2:
+        root = window.global.neutralRoot
+        break
+    }
+    const maker = new makeAUnit({fatherNode: this.node, unitPrefab: this.unitPrefab, root: root})
     this.make = () => maker.make({birthPlace: this.birthPlace})
     this.init()
   },

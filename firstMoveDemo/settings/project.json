@@ -4,11 +4,12 @@
     "player",
     "enemy",
     "allies",
-    "enemyBullet"
+    "enemyBullet",
+    "alliesBullet"
   ],
   "collision-matrix": [
     [
-      true
+      false
     ],
     [
       false,
@@ -21,6 +22,8 @@
       false,
       true,
       true,
+      true,
+      null,
       true
     ],
     [
@@ -35,6 +38,14 @@
       true,
       false,
       true,
+      false
+    ],
+    [
+      false,
+      false,
+      true,
+      false,
+      false,
       false
     ]
   ],
