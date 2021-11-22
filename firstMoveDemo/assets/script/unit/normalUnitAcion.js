@@ -117,12 +117,34 @@ const NormalUnit = cc.Class({
     },
 
     checkFollowPlayer() {
-        const target = window.global.player
-        if (target) {
-            this.status = '发现玩家，跟随！'
-            // 移动过去
-            moveTowardTarget.call(this, target, this.getComponent('unit').speed)
-            return true
+        const player = window.global.player
+        const {orderMode} = player.getComponent('unit')
+        const {speed, birthPlace} = this.getComponent('unit')
+        switch (orderMode) {
+            case 'attack': {
+                // 移动过去
+                const test = cc.v2(0, 0)
+                const distance = realDistanceDiffMin.call(this, {getPosition: () => test})
+                // 防抖
+                if (distance > 5) {
+                    moveTowardTarget.call(this, birthPlace, speed)
+                }
+                return true
+            }
+            case 'defence': {
+                // 移动过去
+                const test = birthPlace
+                const distance = realDistanceDiffMin.call(this, {getPosition: () => test})
+                // 防抖
+                if (distance > 5) {
+                    moveTowardTarget.call(this, birthPlace, speed)
+                }
+                return true
+            }
+            case "followPlayer":
+                // 移动过去
+                moveTowardTarget.call(this, player, this.getComponent('unit').speed)
+                return true
         }
     },
 
@@ -190,7 +212,6 @@ const NormalUnit = cc.Class({
     },
 
     onDead() {
-        debugger
         this.alive = false
         this.node.destroy()
     },

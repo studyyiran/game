@@ -2,7 +2,7 @@ export function realDistanceDiffMin (ccNode) {
     // 实际距离
     const distance = this.node.position.sub(ccNode.getPosition()).mag();
     // 最小距离
-    const minDis = (ccNode.width + this.node.width) / 2
+    const minDis = (ccNode.width || 0 + this.node.width) / 2
     const safe = 0
     return distance - minDis - safe
 }
