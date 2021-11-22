@@ -236,7 +236,7 @@ cc.Class({
         //
         const target = this.getComponent('unit')
         if (target.hp < target.maxHp) {
-            target.hp = target.hp + 0.5;
+            target.hp = target.hp + this.getComponent('unit').hpRecover * dt;
         }
         // console.log('u2')
         this.moveByToward(dt)

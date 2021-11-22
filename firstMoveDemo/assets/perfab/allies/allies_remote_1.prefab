@@ -51,8 +51,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 11,
-      "height": 15
+      "width": 110,
+      "height": 150
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -176,15 +176,16 @@
     },
     "_enabled": true,
     "speed": 200,
-    "maxHp": 15,
+    "maxHp": 50,
     "viewRange": 200,
     "meleeAttackDamage": 0,
     "meleeAttackRange": 0,
     "patrolWaitMaxTime": 1,
-    "remoteAttackDamage": 15,
-    "remoteAttackRange": 100,
+    "remoteAttackDamage": 20,
+    "remoteAttackRange": 170,
     "attackInterval": 0.8,
     "attackRange": 10,
+    "hpRecover": 10,
     "_id": ""
   },
   {

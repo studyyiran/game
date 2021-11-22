@@ -172,16 +172,17 @@
       "__id__": 1
     },
     "_enabled": true,
-    "speed": 200,
-    "maxHp": 2500,
-    "viewRange": 150,
-    "meleeAttackDamage": 6,
+    "speed": 250,
+    "maxHp": 100,
+    "viewRange": 180,
+    "meleeAttackDamage": 10,
     "meleeAttackRange": 10,
     "patrolWaitMaxTime": 1,
     "remoteAttackDamage": 0,
     "remoteAttackRange": 0,
     "attackInterval": 1,
     "attackRange": 10,
+    "hpRecover": 10,
     "_id": ""
   },
   {

@@ -192,7 +192,7 @@
       "array": [
         0,
         0,
-        370.90244246455416,
+        424.352447854375,
         0,
         0,
         0,
@@ -438,7 +438,7 @@
         "__id__": 117
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": null,
     "_opacity": 255,
@@ -5942,7 +5942,7 @@
       "__uuid__": "f2c6f3fb-6f91-4608-8754-e07e385c429e"
     },
     "interval": 1,
-    "maxCount": 0,
+    "maxCount": 3,
     "enemyForce": 1,
     "birthPlace": "player",
     "_id": "c7cT42Nj9Pg6QIshpuhSx7"
@@ -6056,7 +6056,7 @@
       "__uuid__": "7d3b05f3-3f2b-4d75-aef8-fbad33e27dc2"
     },
     "interval": 1,
-    "maxCount": 5,
+    "maxCount": 2,
     "enemyForce": 1,
     "birthPlace": "player",
     "_id": "e34rtowD9NepRw0gjOLHAC"
@@ -6163,16 +6163,16 @@
       "__id__": 119
     },
     "_enabled": true,
-    "speed": 400,
+    "speed": 300,
     "maxHp": 100,
     "viewRange": 100,
-    "meleeAttackDamage": 15,
+    "meleeAttackDamage": 30,
     "meleeAttackRange": 10,
-    "patrolWaitMaxTime": 1,
+    "patrolWaitMaxTime": 0,
     "remoteAttackDamage": 0,
     "remoteAttackRange": 0,
-    "attackInterval": 1,
-    "attackRange": 10,
+    "attackInterval": -100,
+    "attackRange": -100,
     "_id": "82xxcjtSlEyIiXiBDgFMXO"
   },
   {
@@ -6828,8 +6828,8 @@
     "unitPrefab": {
       "__uuid__": "9b74fa16-1a4a-4723-a1d7-0b7539525393"
     },
-    "interval": 1.5,
-    "maxCount": 1,
+    "interval": 3,
+    "maxCount": 10,
     "enemyForce": 0,
     "birthPlace": "inScreen",
     "_id": "6e8Qi9jlhD67ph5/2iBWHC"
@@ -6943,7 +6943,7 @@
       "__uuid__": "3970ab7d-77c1-4c2b-b573-49cc9be80afa"
     },
     "interval": 1,
-    "maxCount": 0,
+    "maxCount": 10,
     "enemyForce": 0,
     "birthPlace": "inScreen",
     "_id": "77eYe5f1FP7qM1BoIi0gjg"

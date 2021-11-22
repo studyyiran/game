@@ -26,6 +26,7 @@ cc.Class({
         remoteAttackRange: 0,
         attackInterval: 1, // 攻击间隔
         attackRange: 10,
+        hpRecover: 10,
     },
 
     init: function (arr) {
