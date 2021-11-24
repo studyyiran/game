@@ -36,11 +36,8 @@ cc.Class({
 
     update (dt) {
         if (window?.global?.player) {
-            console.log('test')
             const p = window.global.player.convertToWorldSpaceAR(cc.v2(0, 0));
-            console.log(p)
             const c = this.node.parent.convertToNodeSpaceAR(p)
-            console.log(c)
             this.node.position = c;
         }
     },

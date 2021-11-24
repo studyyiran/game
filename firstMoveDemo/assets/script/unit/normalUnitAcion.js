@@ -56,6 +56,9 @@ const NormalUnit = cc.Class({
 
     // 找到攻击范围内的敌人
     isInAttackRange(target) {
+        if (!target) {
+            return null
+        }
         const distance = realDistanceDiffMin.call(this, target.node)
         // 先暂时判断 || 来解决
         const attackRange = this.getComponent('unit').remoteAttackRange || this.getComponent('unit').meleeAttackRange
@@ -65,6 +68,9 @@ const NormalUnit = cc.Class({
 
     // 找到视野范围内的敌人
     isInViewRange(target) {
+        if (!target) {
+            return null
+        }
         const distance = realDistanceDiffMin.call(this, target.node)
         let canSee = distance < this.getComponent('unit').viewRange
         const attackRange = this.getComponent('unit').remoteAttackRange || this.getComponent('unit').meleeAttackRange
@@ -74,6 +80,9 @@ const NormalUnit = cc.Class({
     },
 
     attack(target) {
+        if (!target) {
+            return null
+        }
         // 如果可以攻击
         if (!this.canNotAttack) {
             if (this.getComponent('unit').meleeAttackDamage) {
@@ -118,8 +127,7 @@ const NormalUnit = cc.Class({
 
     checkFollowPlayer() {
         const player = window.global.player
-        const {orderMode} = player.getComponent('unit')
-        const {speed, birthPlace} = this.getComponent('unit')
+        const {speed, birthPlace, orderMode} = this.getComponent('unit')
         switch (orderMode) {
             case 'attack': {
                 // 移动过去
@@ -142,6 +150,7 @@ const NormalUnit = cc.Class({
                 return true
             }
             case "followPlayer":
+                debugger
                 // 移动过去
                 moveTowardTarget.call(this, player, this.getComponent('unit').speed)
                 return true
@@ -191,6 +200,19 @@ const NormalUnit = cc.Class({
         this.waitAndPatrolRef.run(dt)
     },
 
+    // 进攻指定地点
+    attackPosition(dt) {
+        if (this.getComponent("unit").attackPosition) {
+
+            // TODO 要考虑镜像操作
+            let target = this.getComponent("unit").attackPosition
+
+            // 往目标点移动
+            moveTowardTarget.call(this, target, this.getComponent('unit').speed)
+            return true
+        }
+    },
+
     resetSpeed () {
         let lv = this.node.getComponent(cc.RigidBody).linearVelocity
         lv.x = 0
@@ -217,6 +239,7 @@ const NormalUnit = cc.Class({
     },
 
     onLoad () {
+        console.log('unit onLoad')
         this?.node?.getComponent?.('unit').addOnDead(this.onDead.bind(this))
     },
 

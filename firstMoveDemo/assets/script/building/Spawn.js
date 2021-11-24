@@ -15,17 +15,18 @@ class makeAUnit {
   }
 
 
-  getBirthPlace({birthMethod}) {
+  getBirthPlace({birthMethod, newUnit}) {
     const type = 'inScreen'
     let x
     let y
     switch (birthMethod) {
+      case "attack": {
+        newUnit.getComponent('unit').attackPosition = cc.v2(-500, -100)
+        return cc.v2(0, 0)
+      }
+
       case "player":
-        const range = 200
-        // 获取一个随机 x
-        x = (Math.random() - 0.5) * range
-        // 获取一个随机 y
-        y = (Math.random() - 0.5) * range
+        newUnit.getComponent("unit").orderMode = "followPlayer"
         // 设置位置
         return cc.v2(x + window.global.player.x, y + window.global.player.y)
       case "origin":
@@ -37,9 +38,10 @@ class makeAUnit {
         // 设置位置
         return cc.v2(x, y)
       case "defence": {
+        newUnit.getComponent("unit").orderMode = "defence"
         const index = this.script.list.length
-        const distance = 200
-        return this.fatherNode.convertToWorldSpaceAR(cc.v2(distance  + 50 * (Math.random() - 0.5), (index % 2 === 0 ? 1 : -1 ) * distance * Math.ceil( index / 2) / 2))
+        const range = 100
+        return this.fatherNode.convertToWorldSpaceAR(cc.v2(200 + range * (Math.random() - 0.5), range * (Math.random() - 0.5)))
       }
       case "inScreen":
         // 获取一个随机 x
@@ -54,7 +56,7 @@ class makeAUnit {
   make(config) {
     // 生成
     const newUnit = cc.instantiate(this.unitPrefab)
-    const birthPlace = this.getBirthPlace({...config })
+    const birthPlace = this.getBirthPlace({...config, newUnit })
     // 出生位置，一般来说，是在兵营的位置
     const sameWithBuilding = this.fatherNode.convertToWorldSpaceAR(cc.v2(0, 0));
     // 但是由于出生后，部队添加到了对应的节点，所以需要坐标转化一下
@@ -83,6 +85,7 @@ cc.Class({
     maxCount: 0,
     enemyForce: 0,
     birthMethod: "inScreen",
+    perCount: 1,
   },
 
   // 初始化
@@ -127,23 +130,27 @@ cc.Class({
   },
 
   update (dt) {
-    this.progress.progress = this.processTimer / this.interval
+    if (this.progress) {
+      this.progress.progress = this.processTimer / this.interval
+    }
     // 如果 count 在范围内
     if (this.list.length < this.maxCount) {
       this.processTimer += dt
       // 如果到达了
       if (this.processTimer > this.interval) {
         this.processTimer = 0
-        const newUnit = this.make()
-        // 放入队列中
-        this.list.push(newUnit)
-        // 设置死亡
-        newUnit.getComponent('unit').addOnDead(() => {
-          // 从队列里面删除
-          this.list = this.list.filter((instance) => {
-            return instance !== newUnit
+        for (let i = 0 ; i < this.perCount; i++) {
+          const newUnit = this.make()
+          // 放入队列中
+          this.list.push(newUnit)
+          // 设置死亡
+          newUnit.getComponent('unit').addOnDead(() => {
+            // 从队列里面删除
+            this.list = this.list.filter((instance) => {
+              return instance !== newUnit
+            })
           })
-        })
+        }
       }
     }
   }

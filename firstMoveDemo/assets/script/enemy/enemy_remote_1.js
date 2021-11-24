@@ -5,7 +5,7 @@ cc.Class({
     extends: normalUnitAcion,
     ctor: function () {
         console.log('enemy 远程')
-        this.actionArr = [this.checkAttack.bind(this), this.checkRange.bind(this), this.missThePlayer.bind(this), this.waitAndPatrol.bind(this)]
+        this.actionArr = [this.checkAttack.bind(this), this.checkRange.bind(this), this.missThePlayer.bind(this), this.attackPosition.bind(this), this.waitAndPatrol.bind(this)]
     },
 
     properties: {
