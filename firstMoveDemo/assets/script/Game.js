@@ -46,7 +46,11 @@ cc.Class({
       type: cc.AudioClip
     },
     needScore: 100,
-    debuggerOpen: false
+    debuggerOpen: false,
+    tower: {
+      default: null,
+      type: cc.Prefab
+    },
   },
 
   // newTimerBomb () {
@@ -86,6 +90,7 @@ cc.Class({
       alliesRoot: cc.find('root/alliesRoot', this.node),
       neutralRoot: cc.find('root/neutralRoot', this.node),
       enemyBullet: cc.find('root/enemyBullet', this.node),
+      tower: this.tower,
       canvas: this.node,
       game: this
     }

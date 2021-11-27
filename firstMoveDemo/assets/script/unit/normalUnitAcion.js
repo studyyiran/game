@@ -89,8 +89,13 @@ const NormalUnit = cc.Class({
                 // 近战攻击敌人
                 scriptAttackScript(this, target)
             } else if (this.getComponent('unit').remoteAttackDamage) {
-                // 远程攻击敌人
-                this.getComponent('bulletLauncher').fire(target.node)
+                if (this.getComponent('bulletLauncher') && this.getComponent('bulletLauncher').enabled) {
+                    // 远程攻击敌人
+                    this.getComponent('bulletLauncher').fire(target.node)
+                } else {
+                    return null
+                }
+
             }
 
             // 设定 cd
@@ -125,18 +130,48 @@ const NormalUnit = cc.Class({
         }
     },
 
+    // 超过 2000 就强制跟随
     checkFollowPlayer() {
         const player = window.global.player
         const {speed, birthPlace, orderMode} = this.getComponent('unit')
-        switch (orderMode) {
-            case 'attack': {
-                // 移动过去
-                const test = cc.v2(0, 0)
+        if (orderMode === "followPlayer") {
+            // 如果距离过远了。
+            const distance = realDistanceDiffMin.call(this, player)
+            const playerSpeed = player.getComponent('unit').speed
+            if (distance > 200) {
+                moveTowardTarget.call(this, player, playerSpeed)
+                return true
+            }
+        }
+    },
+
+    checkOrderMode() {
+        const player = window.global.player
+        const {speed, birthPlace, orderMode} = this.getComponent('unit')
+        let finalCommand = orderMode
+        if (finalCommand && finalCommand !== 'followPlayer' && window.command) {
+            finalCommand = 'alliesAttack'
+        }
+        switch (finalCommand) {
+            case 'alliesAttack': {
+                // 朝这个节点攻击
+                const test = cc.v2(1000, 0)
                 const distance = realDistanceDiffMin.call(this, {getPosition: () => test})
                 // 防抖
                 if (distance > 5) {
-                    moveTowardTarget.call(this, birthPlace, speed)
+                    moveTowardTarget.call(this, test, speed)
                 }
+                return true
+            }
+            case 'attack': {
+                // 移动过去
+                // const test = cc.v2(0, 0)
+                // const distance = realDistanceDiffMin.call(this, {getPosition: () => test})
+                // // 防抖
+                // if (distance > 5) {
+                //     moveTowardTarget.call(this, birthPlace, speed)
+                // }
+                moveTowardTarget.call(this, birthPlace, speed)
                 return true
             }
             case 'defence': {
@@ -150,7 +185,6 @@ const NormalUnit = cc.Class({
                 return true
             }
             case "followPlayer":
-                debugger
                 // 移动过去
                 moveTowardTarget.call(this, player, this.getComponent('unit').speed)
                 return true
@@ -239,8 +273,8 @@ const NormalUnit = cc.Class({
     },
 
     onLoad () {
-        console.log('unit onLoad')
-        this?.node?.getComponent?.('unit').addOnDead(this.onDead.bind(this))
+        console.log('unit onLoad ！！！！')
+        this?.node?.getComponent?.('unit')?.addOnDead(this.onDead.bind(this))
     },
 
     start () {
