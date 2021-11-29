@@ -18,7 +18,20 @@ cc.Class({
     onKeyDownHandler(e) {
         const currentKey = e.keyCode
         switch (currentKey) {
+            case cc.macro.KEY.t: // 建筑
+            {
+                // TODO 这块明明可以抽象一下
+
+                // 生成
+                const newUnit = cc.instantiate(window.global.enemyTower)
+                const pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+                newUnit.setPosition(window.global.alliesRoot.parent.convertToNodeSpaceAR(pos))
+                // 添加到节点
+                window.global.enemyRoot.addChild(newUnit)
+                break;
+            }
             case cc.macro.KEY.b: // 建筑
+            {
                 // TODO 这块明明可以抽象一下
 
                 // 生成
@@ -28,6 +41,7 @@ cc.Class({
                 // 添加到节点
                 window.global.alliesRoot.addChild(newUnit)
                 break;
+            }
             case cc.macro.KEY.m:
                 if (!this.aiSpeedDebuff) {
                     // 效果：每隔 200 毫秒，判定一下运动状态

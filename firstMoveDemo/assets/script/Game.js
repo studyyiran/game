@@ -51,6 +51,10 @@ cc.Class({
       default: null,
       type: cc.Prefab
     },
+    enemyTower: {
+      default: null,
+      type: cc.Prefab
+    },
   },
 
   // newTimerBomb () {
@@ -91,6 +95,7 @@ cc.Class({
       neutralRoot: cc.find('root/neutralRoot', this.node),
       enemyBullet: cc.find('root/enemyBullet', this.node),
       tower: this.tower,
+      enemyTower: this.enemyTower,
       canvas: this.node,
       game: this
     }
