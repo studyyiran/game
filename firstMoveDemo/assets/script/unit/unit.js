@@ -84,7 +84,7 @@ const unit = cc.Class({
             const parent = this.node
             this.hpProgressNode.width = parent.width
             this.hpProgressNode.x = -1 * parent.width / 2
-            this.hpProgressNode.y = parent.height / 2 + 1 * this.hpProgressNode.height // y 轴位置 = 父节点高度 + 自身高度
+            this.hpProgressNode.y = parent.height / 2 + 0 * this.hpProgressNode.height // y 轴位置 = 父节点高度 + 自身高度
             this.hpProgress.totalLength = this.node.width
         }
     },
