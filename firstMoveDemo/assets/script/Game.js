@@ -55,6 +55,10 @@ cc.Class({
       default: null,
       type: cc.Prefab
     },
+    hpBar: {
+      default: null,
+      type: cc.Prefab
+    },
   },
 
   // newTimerBomb () {
@@ -97,7 +101,10 @@ cc.Class({
       tower: this.tower,
       enemyTower: this.enemyTower,
       canvas: this.node,
-      game: this
+      game: this,
+      uiPrefab: {
+        hpBar: this.hpBar
+      }
     }
   },
 

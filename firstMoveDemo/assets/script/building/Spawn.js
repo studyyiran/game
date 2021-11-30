@@ -143,11 +143,18 @@ cc.Class({
           // 放入队列中
           this.list.push(newUnit)
           // 设置死亡
-          newUnit.getComponent('unit').addOnDead(() => {
-            // 从队列里面删除
-            this.list = this.list.filter((instance) => {
-              return instance !== newUnit
-            })
+          newUnit.getComponent('unit').addOnDead((oldArr) => {
+            return [
+                ...oldArr,
+              () => {
+              if (this?.list) {
+                // 从队列里面删除
+                this.list = this.list.filter((instance) => {
+                  return instance !== newUnit
+                })
+              }
+              }
+            ]
           })
         }
       }

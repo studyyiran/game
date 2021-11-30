@@ -47,19 +47,17 @@ cc.Class({
     },
 
     onDead() {
-        this.alive = false
         this.node.destroy()
         this?.node?.getComponent?.('unit').dead()
     },
 
     onLoad() {
         this?.node?.getComponent?.('unit').setDeadCondition(() => this.bombTime >= this.bombMaxTime)
-        this?.node?.getComponent?.('unit').addOnDead(this.onDead.bind(this))
+        this?.node?.getComponent?.('unit').addOnDead(() => [this.onDead.bind(this)])
     },
 
     start () {
         this.bombTime = 0
-        this.alive = true
         this.setSizeByPercent()
     },
 

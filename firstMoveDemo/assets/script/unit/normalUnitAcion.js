@@ -290,14 +290,9 @@ const NormalUnit = cc.Class({
         })
     },
 
-    onDead() {
-        this.alive = false
-        this.node.destroy()
-    },
 
     onLoad () {
         console.log('unit onLoad ！！！！')
-        this?.node?.getComponent?.('unit')?.addOnDead(this.onDead.bind(this))
     },
 
     start () {

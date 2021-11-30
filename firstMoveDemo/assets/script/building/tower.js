@@ -100,14 +100,8 @@ cc.Class({
         return false
     },
 
-    onDead() {
-        this.alive = false
-        this.node.destroy()
-    },
-
     // 上面的代码，还没想好怎么组件化
     onLoad () {
-        this?.node?.getComponent?.('unit')?.addOnDead(this.onDead.bind(this))
         this.getComponent('bulletLauncher').enabled = false
         const building = this.getComponent('building')
         building?.addOnFinish(() => {
