@@ -1,9 +1,8 @@
-// Learn cc.Class:
-//  - https://docs.cocos.com/creator/manual/en/scripting/class.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+/*
+spawn：
+1）可以把进度计算的逻辑，扔出去？
+2）进度条的逻辑，肯定可以扔出去。
+ */
 
 
 class makeAUnit {

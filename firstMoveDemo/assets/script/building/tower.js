@@ -2,6 +2,14 @@
 import normalUnitAcion from '../unit/normalUnitAcion'
 import {realDistanceDiffMin, scriptAttackScript} from "../util";
 
+/*
+这样，tower 的远程攻击就可以扔出去了。
+死亡判定，也可以扔出去了。
+
+
+这样所有的兵种相关的 script 就消失了，只有 prefab 的概念
+
+ */
 
 cc.Class({
     extends: normalUnitAcion,

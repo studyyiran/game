@@ -1,5 +1,12 @@
 
 import unit from './unit.js'
+
+/*
+building 的特点就是，可以被建造。
+他有建造的功能 因此通过 current 和 total 来控制建筑的建造时间
+
+可以看看，能否让 progress，同时处理建筑物进度、英雄施法读条、建筑物生产部队读条，多种形式。
+ */
 cc.Class({
     extends: cc.Component,
 

@@ -1,4 +1,27 @@
+/*
 
+生成：
+1）我需要一个刷兵的脚本。
+可能 spawn 的生成我要抽离一下
+
+
+2）我要一个全局命令变更的方案
+
+
+部队：
+1）现在的兵种类型。。。
+ 我们可以把势力范围，放到 unit 里面，在生成的时候改变。
+然后在 attack 的时候，根据 unit 的变量来处理
+
+2）兵种 AI 可以，用一个 actionArr，维护在一个地方。然后。。动态拼接的方式
+
+然后每一个行为，通过一个个脚本，拿出去。
+Prefab 通过这些脚本进行拼接
+
+3）死亡等逻辑，默认放到 unit 里面。但是支持重置。
+
+
+ */
 import {realDistanceDiffMin, moveTowardTarget, scriptAttackScript} from "../util";
 
 class WaitAndPatrol {

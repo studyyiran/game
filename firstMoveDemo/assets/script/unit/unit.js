@@ -1,9 +1,12 @@
-// Learn cc.Class:
-//  - https://docs.cocos.com/creator/manual/en/scripting/class.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+
+/*
+unit 承载大量的通用属性。
+处理 死亡 hp 等逻辑
+
+
+目前是耦合在 unit 上面的。暂时如此把。因为 hp 和 unit 都可存在，也算合理
+可以尝试去拓展几个新的建筑物，测试一下 hp 的能力
+ */
 
 const unit = cc.Class({
     extends: cc.Component,
@@ -27,7 +30,6 @@ const unit = cc.Class({
         patrolWaitMaxTime: 1, // 目标范围内没有敌人时，每次巡逻的时间
         attackRange: 0,
         hpRecover: 0,
-        needHp: false,
     },
 
     init: function (arr) {

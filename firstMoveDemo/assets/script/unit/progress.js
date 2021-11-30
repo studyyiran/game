@@ -1,4 +1,6 @@
 
+// 应该承担更多，目前只负责，结束后自动消失。这块如果要改，可以和 spawn 的精简一块做。
+
 cc.Class({
     extends: cc.Component,
 
