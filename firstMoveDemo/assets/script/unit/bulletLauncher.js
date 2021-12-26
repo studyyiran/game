@@ -30,7 +30,7 @@ cc.Class({
             // 设置子弹伤害
             newBulltet.damage = this.getComponent('unit').remoteAttackDamage
             // 添加到节点上
-            window.global.enemyBullet.addChild(newBulltet)
+            window.global.bulletRoot.addChild(newBulltet)
         }
 
     },

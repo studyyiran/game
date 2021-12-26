@@ -25,7 +25,7 @@ cc.Class({
         if (this.progressScript) {
             this.node.width = parent.width
             this.node.x = -1 * parent.width / 2
-            this.node.y = parent.height / 2 + this.node.height / 2 // y 轴位置 = 父节点高度 + 自身高度
+            this.node.y = parent.height / 2 + this.node.height / 2 + this.node.height / 2 // y 轴位置 = 父节点高度一半 + 自身高度一半（一半的原因是因为锚点）+ 自身高度（进度条组件需要在顶部）
             this.progressScript.totalLength = this.node.width
         }
     },

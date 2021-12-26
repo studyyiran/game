@@ -59,6 +59,10 @@ cc.Class({
       default: null,
       type: cc.Prefab
     },
+    progressBar: {
+      default: null,
+      type: cc.Prefab
+    },
   },
 
   // newTimerBomb () {
@@ -97,13 +101,14 @@ cc.Class({
       enemyRoot: cc.find('root/enemyRoot', this.node),
       alliesRoot: cc.find('root/alliesRoot', this.node),
       neutralRoot: cc.find('root/neutralRoot', this.node),
-      enemyBullet: cc.find('root/enemyBullet', this.node),
+      bulletRoot: cc.find('root/bulletRoot', this.node),
       tower: this.tower,
       enemyTower: this.enemyTower,
       canvas: this.node,
       game: this,
       uiPrefab: {
-        hpBar: this.hpBar
+        hpBar: this.hpBar,
+        progressBar: this.progressBar
       }
     }
   },

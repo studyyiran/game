@@ -51,8 +51,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 110,
-      "height": 150
+      "width": 55,
+      "height": 75
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -70,9 +70,9 @@
         0,
         0,
         1,
-        0.5,
-        0.5,
-        0.5
+        1,
+        1,
+        1
       ]
     },
     "_eulerAngles": {
@@ -164,7 +164,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 70,
+    "_radius": 35,
     "_id": ""
   },
   {
@@ -180,12 +180,13 @@
     "viewRange": 200,
     "meleeAttackDamage": 0,
     "meleeAttackRange": 0,
-    "patrolWaitMaxTime": 1,
     "remoteAttackDamage": 20,
     "remoteAttackRange": 170,
     "attackInterval": 0.8,
+    "patrolWaitMaxTime": 1,
     "attackRange": 10,
     "hpRecover": 10,
+    "needHpBar": true,
     "_id": ""
   },
   {

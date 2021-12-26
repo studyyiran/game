@@ -177,12 +177,13 @@
     "viewRange": 180,
     "meleeAttackDamage": 10,
     "meleeAttackRange": 10,
-    "patrolWaitMaxTime": 1,
     "remoteAttackDamage": 0,
     "remoteAttackRange": 0,
     "attackInterval": 1,
+    "patrolWaitMaxTime": 1,
     "attackRange": 10,
     "hpRecover": 10,
+    "needHpBar": true,
     "_id": ""
   },
   {

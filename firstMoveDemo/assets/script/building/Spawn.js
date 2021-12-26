@@ -85,6 +85,7 @@ cc.Class({
     enemyForce: 0,
     birthMethod: "inScreen",
     perCount: 1,
+    needProgressBar: false,
   },
 
   // 初始化
@@ -94,11 +95,13 @@ cc.Class({
     this.enabled = true
 
     const progress = this.node.parent?.getChildByName?.("progress")
-    if (progress) {
-      progress.width = this.node.width
-      progress.x = this.node.x
-      progress.y = this.node.height / 2
-      this.progress = progress.getComponent(cc.ProgressBar)
+    if (this.needProgressBar) {
+      const node = cc.instantiate(window.global.uiPrefab.progressBar);
+      node.parent = this.node
+    }
+    this.progressBarNode = this.node.getChildByName('progressBar')
+    if (this.progressBarNode) {
+      this.progressBar = this.progressBarNode?.getComponent(cc.ProgressBar)
     }
   },
 
@@ -129,8 +132,8 @@ cc.Class({
   },
 
   update (dt) {
-    if (this.progress) {
-      this.progress.progress = this.processTimer / this.interval
+    if (this.progressBar) {
+      this.progressBar.progress = this.processTimer / this.interval
     }
     // 如果 count 在范围内
     if (this.list.length < this.maxCount) {
