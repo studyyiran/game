@@ -178,7 +178,7 @@ const NormalUnit = cc.Class({
         switch (finalCommand) {
             case 'alliesAttack': {
                 // 朝这个节点攻击
-                const test = cc.v2(1000, 0)
+                const test = cc.v2(window.global.enemyBirth?.position)
                 const distance = realDistanceDiffMin.call(this, {getPosition: () => test})
                 // 防抖
                 if (distance > 5) {

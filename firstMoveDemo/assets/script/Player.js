@@ -111,7 +111,18 @@ cc.Class({
                 window.global.enemyRoot.children.some((target) => {
                     // 如果找到了
                     if (this.isInAttackRange(target)) {
-                        scriptAttackScript(this, target)
+                        const targetDead = scriptAttackScript(this, target)
+                        if (targetDead) {
+                            debugger
+                            // 增加等级。
+                            this.getComponent('unit').maxHp = this.getComponent('unit').maxHp + 1
+                            this.getComponent('unit').damage = this.getComponent('unit').damage + 1
+                            const statusLabel = this.node.getChildByName("statusLabel");
+                            // 刷新等级
+                            this.level++
+                            statusLabel.getComponent(cc.Label).string = `Lv ${this.level}`
+
+                        }
                         return true
                     }
 
@@ -217,8 +228,6 @@ cc.Class({
         }
         this.node.getComponent(cc.RigidBody).linearVelocity = lv
 
-
-
         // if (this.towardXLast === 'a') {
         //     this.node.x -= this.speed * realDt
         // } else if (this.towardXLast === 'd') {
@@ -234,15 +243,41 @@ cc.Class({
     },
 
     init() {
-        this.node.enabled = true
+        this.enabled = true
+        this.getComponent('unit').status = true
+    },
+
+    setRebirth() {
+        const statusLabel = this.node.getChildByName("statusLabel");
+        const needTime = 5 * 1000
+        if (statusLabel) {
+            // statusLabel.active = true
+            statusLabel.getComponent(cc.Label).string = needTime
+        }
+        const timer = setInterval(() => {
+            statusLabel.getComponent(cc.Label).string -= 100
+
+
+        }, 100)
+        setTimeout(() => {
+            clearInterval(timer)
+            statusLabel.getComponent(cc.Label).string = this.level
+            // statusLabel.active = false
+            this.init()
+        }, needTime)
     },
 
     onDead() {
-        this.node.enabled = false
+        this.enabled = false
+        // 回归到基地原点
+        this.node.setPosition(window.global.playerBirth.position)
+        // 清空速度，状态，等
+        this.resetSpeed()
+        // 设置重生
+        this.setRebirth()
     },
 
     onLoad() {
-
         // console.log(2)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDownHandler, this);
         // cc.systemEvent.on(cc.SystemEvent.EventType.KEY_PRESS, this.onKeyDownHandler, this);
@@ -250,7 +285,8 @@ cc.Class({
         // 为了给敌人施加 debuff 所以需要获取敌人的引用
         this.scriptAi = this.node.parent.getComponent('Game').Ai.getComponent('Ai')
         this.getComponent('unit').addOnDead(() => [this.onDead.bind(this)])
-
+        // 初始化
+        this.level = 0
         // 更改模式
         this.getComponent('unit').orderMode = "defence"
     },
@@ -258,8 +294,10 @@ cc.Class({
     onEnable() {
         // console.log(5)
         // 每次重启游戏，出生
-        // this.hp = this.maxHp 这个应该让 maxHp 来做
-        this.node.setPosition(cc.v2(100, 0))
+        // 回归到基地原点
+        this.node.setPosition(window.global.playerBirth.position)
+        this.getComponent('unit').hp = this.getComponent('unit').maxHp // 这个应该让 maxHp 来做
+        // this.node.setPosition(cc.v2(100, 0))
     },
 
 
@@ -268,13 +306,27 @@ cc.Class({
         // this.hp = this.maxHp
     },
 
+    checkDead() {
+        if (this.hp < 0) {
+            this.onDead()
+        }
+    },
+
+    resetSpeed () {
+        let lv = this.node.getComponent(cc.RigidBody).linearVelocity
+        lv.x = 0
+        lv.y = 0
+        this.node.getComponent(cc.RigidBody).linearVelocity = lv
+    },
+
     update(dt) {
-        //
+        // 检测死亡
         const target = this.getComponent('unit')
+        // 加血
         if (target.hp < target.maxHp) {
             target.hp = target.hp + this.getComponent('unit').hpRecover * dt;
         }
-        // console.log('u2')
+        this.resetSpeed()
         this.moveByToward(dt)
     },
 });

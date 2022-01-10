@@ -36,4 +36,5 @@ export function scriptAttackScript (myScriptIsThis, targetNode) {
     const damage = myScriptIsThis.getComponent('unit').meleeAttackDamage
     const targetUnit = targetNode.getComponent('unit')
     targetUnit.hp = targetUnit.hp - damage
+    return targetUnit.hp <= 0
 }

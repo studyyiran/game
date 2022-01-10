@@ -9,18 +9,26 @@ cc.Class({
   extends: cc.Component,
 
   properties: {
+    // 角色
     Player: {
       default: null,
       type: cc.Node
     },
-    Spawn: {
+    // 单位
+    tower: {
       default: null,
-      type: cc.Node
+      type: cc.Prefab
     },
-    Ai: {
+    enemyTower: {
       default: null,
-      type: cc.Node // 如果我要动态实例化 n 个 ai 要如何告知给 TimerBomb
+      type: cc.Prefab
     },
+    // 地图 我为啥不直接去读取。
+    // enemyTarget: {
+    //   default: null,
+    //   type: cc.Prefab
+    // },
+    // UI
     playerScoreLabel: {
       default: null,
       type: cc.Label,
@@ -45,16 +53,7 @@ cc.Class({
       default: null,
       type: cc.AudioClip
     },
-    needScore: 100,
-    debuggerOpen: false,
-    tower: {
-      default: null,
-      type: cc.Prefab
-    },
-    enemyTower: {
-      default: null,
-      type: cc.Prefab
-    },
+    // 一些小部件
     hpBar: {
       default: null,
       type: cc.Prefab
@@ -62,6 +61,18 @@ cc.Class({
     progressBar: {
       default: null,
       type: cc.Prefab
+    },
+    // 配置
+    needScore: 100,
+    debuggerOpen: false,
+    // 废弃
+    Spawn: {
+      default: null,
+      type: cc.Node
+    },
+    Ai: {
+      default: null,
+      type: cc.Node // 如果我要动态实例化 n 个 ai 要如何告知给 TimerBomb
     },
   },
 
@@ -95,6 +106,7 @@ cc.Class({
       ;
     }
     cc.director.getPhysicsManager().gravity = cc.v2();
+    // 动态找到目标
     window.global = {
       player: this.Player,
       ai: this.Ai,
@@ -109,7 +121,12 @@ cc.Class({
       uiPrefab: {
         hpBar: this.hpBar,
         progressBar: this.progressBar
-      }
+      },
+      // 玩家出生地
+      playerBirth: cc.find('root/alliesRoot/playerBirth', this.node),
+      enemyBirth: cc.find('root/enemyRoot/enemyBirth', this.node),
+      // 敌人的目标
+      enemyTarget: this.playerBirth
     }
   },
 
@@ -133,31 +150,32 @@ cc.Class({
   },
 
   checkGameOver() {
-    if (this.score.player > this.needScore) {
+    if (!window.global?.enemyBirth?.isValid || window.global.enemyBirth.getComponent('unit').hp <= 0) {
       this.gameOverLabel.string = 'You Win'
-      cc.audioEngine.playEffect(this.scoreAudioPlayer, true);
+      // cc.audioEngine.playEffect(this.scoreAudioPlayer, true);
       this.stopGame()
     }
-    if (this.score.ai > this.needScore) {
+
+    if (!window.global?.playerBirth?.isValid || window.global.playerBirth.getComponent('unit').hp <= 0) {
       this.gameOverLabel.string = 'Game Over'
-      cc.audioEngine.playEffect(this.scoreAudioAi, true);
+      // cc.audioEngine.playEffect(this.scoreAudioAi, true);
       this.stopGame()
     }
     // 玩家血量空
-    if (this.Player.getComponent('unit').hp <= 0) {
-      this.gameOverLabel.string = 'You Dead'
-      this.stopGame()
-    }
+    // if (this.Player.getComponent('unit').hp <= 0) {
+    //   this.gameOverLabel.string = 'You Dead'
+    //   this.stopGame()
+    // }
 
   },
 
   stopGame() {
     this.gameOverLabel.node.active = true
     this.startButton.active = true
-    this.Ai.getComponent('Ai').dead()
-    this.Player.getComponent('Player').onDead()
+    // this.Ai.getComponent('Ai').dead()
+    // this.Player.getComponent('Player').onDead()
     // this.Spawn.getComponent('Spawn').dead()
-    this.enabled = false
+    // this.enabled = false
   },
 
   restartGame() {
@@ -174,7 +192,6 @@ cc.Class({
   },
 
   update () {
-    // console.log('u1')
     this.renderScore()
     this.checkGameOver()
   }

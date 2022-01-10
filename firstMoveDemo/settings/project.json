@@ -5,7 +5,8 @@
     "enemy",
     "allies",
     "enemyBullet",
-    "alliesBullet"
+    "alliesBullet",
+    "playerAT"
   ],
   "collision-matrix": [
     [
@@ -24,21 +25,26 @@
       true,
       true,
       null,
-      true
-    ],
-    [
-      false,
-      true,
-      true,
       true,
       true
     ],
     [
       false,
       true,
+      true,
+      true,
+      true,
+      null,
+      true
+    ],
+    [
       false,
       true,
-      false
+      false,
+      true,
+      false,
+      null,
+      true
     ],
     [
       false,
@@ -47,6 +53,15 @@
       false,
       false,
       false
+    ],
+    [
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      true
     ]
   ],
   "excluded-modules": [

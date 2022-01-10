@@ -19,8 +19,9 @@ class makeAUnit {
     let x
     let y
     switch (birthMethod) {
+      // 攻击敌人?
       case "attack": {
-        newUnit.getComponent('unit').attackPosition = cc.v2(-500, -100)
+        newUnit.getComponent('unit').attackPosition = cc.v2(window.global?.playerBirth?.position)
         return cc.v2(0, 0)
       }
 
