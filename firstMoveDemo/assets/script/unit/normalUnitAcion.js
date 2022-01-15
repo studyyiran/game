@@ -292,7 +292,7 @@ const NormalUnit = cc.Class({
 
 
     onLoad () {
-        console.log('unit onLoad ！！！！')
+        // console.log('unit onLoad ！！！！')
     },
 
     start () {

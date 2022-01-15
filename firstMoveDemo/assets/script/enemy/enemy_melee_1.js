@@ -17,7 +17,7 @@ import normalUnitAcion from '../unit/normalUnitAcion'
 cc.Class({
     extends: normalUnitAcion,
     ctor: function () {
-        console.log('JinZhan Enemy ~~~~')
+        // console.log('JinZhan Enemy ~~~~')
         this.actionArr = [this.checkAttack.bind(this), this.checkRange.bind(this), this.missThePlayer.bind(this), this.attackPosition.bind(this), this.waitAndPatrol.bind(this)]
     },
 

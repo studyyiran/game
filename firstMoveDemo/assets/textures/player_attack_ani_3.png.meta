@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "3abbd77e-4fa0-4d18-acdb-86c9e643890b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 320,
+  "height": 320,
+  "platformSettings": {},
+  "subMetas": {
+    "player_attack_ani_3": {
+      "ver": "1.0.4",
+      "uuid": "6095ab7d-87f0-46de-a135-dd6d595cb4d3",
+      "rawTextureUuid": "3abbd77e-4fa0-4d18-acdb-86c9e643890b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 320,
+      "height": 320,
+      "rawWidth": 320,
+      "rawHeight": 320,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

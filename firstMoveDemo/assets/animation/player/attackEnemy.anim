@@ -1,0 +1,49 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "attackEnemy",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.2,
+  "sample": 25,
+  "speed": 1,
+  "wrapMode": 0,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "94d413d5-0a75-40d5-a788-fb8450efae7e"
+            }
+          },
+          {
+            "frame": 0.04,
+            "value": {
+              "__uuid__": "52e6ff56-e1cf-456c-8c8f-90c04d219141"
+            }
+          },
+          {
+            "frame": 0.08,
+            "value": {
+              "__uuid__": "d0d61a71-ec39-4b63-afe9-2f1cbf76a8ea"
+            }
+          },
+          {
+            "frame": 0.12,
+            "value": {
+              "__uuid__": "1ded1e2e-d226-43f7-900e-491be256b397"
+            }
+          },
+          {
+            "frame": 0.16,
+            "value": {
+              "__uuid__": "cf94639d-90c5-4f3b-a3f2-b184bd533355"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

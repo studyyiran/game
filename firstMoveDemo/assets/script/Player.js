@@ -6,7 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import {scriptAttackScript, realDistanceDiffMin} from "./util";
-
+let normalAttackCd = 400
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -18,18 +18,18 @@ cc.Class({
     onKeyDownHandler(e) {
         const currentKey = e.keyCode
         switch (currentKey) {
-            case cc.macro.KEY.t: // 建筑
-            {
-                // TODO 这块明明可以抽象一下
-
-                // 生成
-                const newUnit = cc.instantiate(window.global.enemyTower)
-                const pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
-                newUnit.setPosition(window.global.alliesRoot.parent.convertToNodeSpaceAR(pos))
-                // 添加到节点
-                window.global.enemyRoot.addChild(newUnit)
-                break;
-            }
+            // case cc.macro.KEY.t: // 建筑
+            // {
+            //     // TODO 这块明明可以抽象一下
+            //
+            //     // 生成
+            //     const newUnit = cc.instantiate(window.global.enemyTower)
+            //     const pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+            //     newUnit.setPosition(window.global.alliesRoot.parent.convertToNodeSpaceAR(pos))
+            //     // 添加到节点
+            //     window.global.enemyRoot.addChild(newUnit)
+            //     break;
+            // }
             case cc.macro.KEY.b: // 建筑
             {
                 // TODO 这块明明可以抽象一下
@@ -42,34 +42,34 @@ cc.Class({
                 window.global.alliesRoot.addChild(newUnit)
                 break;
             }
-            case cc.macro.KEY.m:
-                if (!this.aiSpeedDebuff) {
-                    // 效果：每隔 200 毫秒，判定一下运动状态
-                    this.aiSpeedDebuff = setInterval(() => {
-                        if (Math.random() > 0.5) {
-                            this.scriptAi.speed = 400
-                        } else {
-                            this.scriptAi.speed = 0
-                        }
-                    }, 200)
-                    // 结束：若干秒后结束效果
-                    setTimeout(() => {
-                        clearInterval(this.aiSpeedDebuff)
-                        this.scriptAi.speed = 400
-                        this.aiSpeedDebuff = null
-                    }, 2000)
-                }
-                break;
+            // case cc.macro.KEY.m:
+            //     if (!this.aiSpeedDebuff) {
+            //         // 效果：每隔 200 毫秒，判定一下运动状态
+            //         this.aiSpeedDebuff = setInterval(() => {
+            //             if (Math.random() > 0.5) {
+            //                 this.scriptAi.speed = 400
+            //             } else {
+            //                 this.scriptAi.speed = 0
+            //             }
+            //         }, 200)
+            //         // 结束：若干秒后结束效果
+            //         setTimeout(() => {
+            //             clearInterval(this.aiSpeedDebuff)
+            //             this.scriptAi.speed = 400
+            //             this.aiSpeedDebuff = null
+            //         }, 2000)
+            //     }
+            //     break;
             case cc.macro.KEY.space:
                 if (!this.speedBuff) {
                     // 效果：速度 * 3
-                    this.getComponent('unit').speed = this.getComponent('unit').speed * 3
+                    this.getComponent('unit').speed = this.getComponent('unit').speed * 1.5
                     this.speedBuff = true
                     // 结束：若干秒后结束效果
                     setTimeout(() => {
                         this.speedBuff = false
-                        this.getComponent('unit').speed = this.getComponent('unit').speed / 3
-                    }, 3000)
+                        this.getComponent('unit').speed = this.getComponent('unit').speed / 1.5
+                    }, 5000)
                     // 冷却：
                 }
                 break;
@@ -110,13 +110,32 @@ cc.Class({
                 // 攻击
                 window.global.enemyRoot.children.some((target) => {
                     // 如果找到了
-                    if (this.isInAttackRange(target)) {
+                    if (this.isInAttackRange(target) && !this.cannotAttack) {
+
+                        this.cannotAttack = true
+                        setTimeout(() => {
+                            this.cannotAttack = false
+                        }, normalAttackCd)
+                        console.log('here')
+
+                        const ani = this.node.getChildByName('blade')
+                        // 计算换算到世界坐标
+                        const a = target.convertToWorldSpaceAR(cc.v2(0, 0))
+                        // 再计算出，相对于我这个节点的未知
+                        const b = this.node.convertToNodeSpaceAR(a)
+                        console.log(a)
+                        console.log(b)
+                        ani.setPosition(b)
+                        ani.getComponent(cc.Animation).play()
+
                         const targetDead = scriptAttackScript(this, target)
+
                         if (targetDead) {
-                            debugger
+                            this.ani_attack.play()
                             // 增加等级。
                             this.getComponent('unit').maxHp = this.getComponent('unit').maxHp + 1
-                            this.getComponent('unit').damage = this.getComponent('unit').damage + 1
+                            this.getComponent('unit').meleeAttackDamage = this.getComponent('unit').meleeAttackDamage + 1
+                            normalAttackCd = normalAttackCd - 10
                             const statusLabel = this.node.getChildByName("statusLabel");
                             // 刷新等级
                             this.level++
@@ -125,6 +144,7 @@ cc.Class({
                         }
                         return true
                     }
+
 
                 })
                 break;
@@ -135,6 +155,10 @@ cc.Class({
     isInAttackRange(target) {
         const distance = realDistanceDiffMin.call(this, target)
         const bool = distance < this.getComponent('unit').meleeAttackRange
+        if (bool) {
+            console.log(distance)
+            console.log(this.getComponent('unit').meleeAttackRange)
+        }
         return bool
     },
 
@@ -289,6 +313,8 @@ cc.Class({
         this.level = 0
         // 更改模式
         this.getComponent('unit').orderMode = "defence"
+        this.ani_attack = this.getComponent(cc.Animation)
+
     },
 
     onEnable() {

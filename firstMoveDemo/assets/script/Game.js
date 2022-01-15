@@ -128,6 +128,8 @@ cc.Class({
       // 敌人的目标
       enemyTarget: this.playerBirth
     }
+    console.log(this.getComponent(cc.AudioSource))
+    this.getComponent(cc.AudioSource).play()
   },
 
   onEnable() {
